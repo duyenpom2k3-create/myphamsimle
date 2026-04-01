@@ -1,0 +1,50 @@
+@model MYMVCAPP.Models.ProductVariant
+
+@{
+    ViewData["Title"] = "Thêm chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mb-4 text-primary">@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    
+    <div class="form-group">
+        <label asp-for="ProductId">Sản phẩm</label>
+        <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId">
+            <option value="">-- Chọn sản phẩm --</option>
+        </select>
+        <span asp-validation-for="ProductId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Color" class="form-label">màu</label>
+        <input asp-for="Color" class="form-control"></>
+        <span asp-validation-for="Color" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Weight" class="form-label">Khối lượng</label>
+        <input asp-for="Weight" class="form-control" />
+        <span asp-validation-for="Weight" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Giá</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Stock" class="form-label">Tồn</label>
+        <input asp-for="Stock" class="form-control" />
+        <span asp-validation-for="Stock" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm chi tiêt sản phẩm</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

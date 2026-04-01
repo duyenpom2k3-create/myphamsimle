@@ -1,0 +1,49 @@
+@using MYMVCAPP.Models
+@model UserModel
+
+@{
+    ViewData["Title"] = "Thông tin tài khoản";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            @await Component.InvokeAsync("MenuUserSidebar")
+
+        </div>
+
+        <!-- Nội dung chính -->
+        <div class="col-md-9">
+            <h3 class="mb-4">Thông tin tài khoản</h3>
+
+            <div class="card shadow-sm p-4">
+                <dl class="row">
+                    <dt class="col-sm-3">Tên tài khoản</dt>
+                    <dd class="col-sm-9">@Model.Username</dd>
+
+                    <dt class="col-sm-3">Họ và tên</dt>
+                    <dd class="col-sm-9">@Model.FullName</dd>
+
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+
+                    <dt class="col-sm-3">Số điện thoại</dt>
+                    <dd class="col-sm-9">@Model.Phone</dd>
+
+                    <dt class="col-sm-3">Địa chỉ</dt>
+                    <dd class="col-sm-9">@Model.Address</dd>
+
+                    <dt class="col-sm-3">Tỉnh/Thành phố</dt>
+                    <dd class="col-sm-9">@Model.Province</dd>
+                </dl>
+            </div>
+
+            <div class="mt-3">
+                <a asp-controller="User" asp-action="Edit" class="btn btn-primary">
+                    <i class="fa fa-edit me-2"></i> Chỉnh sửa thông tin
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

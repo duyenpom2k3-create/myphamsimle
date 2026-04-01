@@ -1,0 +1,113 @@
+/* Thiết lập cho toàn bộ sidebar */
+.sidebar {
+    width: 250px; /* Chiều rộng cố định */
+    padding: 20px 0;
+    background-color: #f7f7f7; /* Màu nền nhẹ nhàng */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05); /* Bóng đổ nhẹ */
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+/* Phần thông tin người dùng */
+.user-info {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 20px 20px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.greeting {
+    font-weight: bold;
+    margin: 0;
+}
+
+.edit-profile {
+    display: block;
+    font-size: 0.9em;
+    color: #888;
+    text-decoration: none;
+    margin-top: 2px;
+}
+
+/* Đường phân cách */
+.divider {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}
+
+/* Tiêu đề menu */
+.menu-title {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    padding: 10px 20px;
+    margin: 0;
+}
+
+/* Menu điều hướng */
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    line-height: 1.5;
+}
+
+.nav-link {
+    display: block;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: #eee;
+    color: #000;
+}
+
+/* Định kiểu cho mục đang hoạt động (active) */
+.nav-item.active .nav-link {
+    color: #38761d; /* Màu xanh lá nổi bật (tương tự như trong hình) */
+    font-weight: bold;
+    background-color: #e0f2d9; /* Nền màu xanh lá nhạt */
+    border-left: 3px solid #38761d; /* Thanh màu nổi bật bên trái */
+    padding-left: 17px; /* Giữ padding tổng thể */
+}
+
+/* Xử lý khoảng cách cho các mục không thuộc nhóm 'Quản lý tài khoản' (nếu cần) */
+.user-info .edit-profile {
+    /* Đảm bảo style giống mục con */
+    padding: 5px 20px; 
+    margin: 0;
+}
+
+.user-info .edit-profile:hover {
+    background-color: #eee;
+}
+.product-actions-footer {
+    display: flex;             /* Bật Flexbox để các phần tử con nằm ngang */
+    gap: 10px;                 /* Thêm khoảng cách giữa hai nút (ví dụ 10px) */
+    width: 100%;               /* Đảm bảo chiếm toàn bộ chiều rộng có sẵn */
+    margin-top: 10px;
+}
+
+/* Đảm bảo nút "Chi Tiết" chiếm không gian tương đương với form "Yêu Thích" */
+.product-actions-footer .btn {
+    width: 100%;               /* Đảm bảo liên kết Chi Tiết lấp đầy không gian của nó */
+}
+
+/* Đảm bảo form và nút bên trong form chiếm hết không gian được chỉ định */
+.product-actions-footer form {
+    flex-grow: 1;              /* Cho phép form mở rộng */
+    margin: 0 !important;      /* Ghi đè margin mặc định của Bootstrap cho form */
+}

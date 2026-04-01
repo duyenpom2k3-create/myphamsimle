@@ -1,0 +1,37 @@
+@model MYMVCAPP.Models.MenuModel
+
+@{
+    ViewData["Title"] = "Thêm Menu mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mb-4 text-primary">@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Tên Menu</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <!-- Hidden field đảm bảo unchecked gửi false -->
+        <input type="hidden" name="Is_active" value="false" />
+        <input type="checkbox" name="Is_active" class="form-check-input" value="true"
+               @(Model?.Is_active.GetValueOrDefault() == true ? "checked" : "") />
+        <label class="form-check-label">Kích hoạt</label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm Menu</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

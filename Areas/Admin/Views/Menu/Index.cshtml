@@ -1,0 +1,55 @@
+@model IEnumerable<MYMVCAPP.Models.MenuModel>
+
+@{
+    ViewData["Title"] = "Danh sách Menu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mb-4 text-primary">@ViewData["Title"]</h2>
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">@TempData["error"]</div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Thêm menu mới</a>
+</p>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Mô tả</th>
+            <th>Slug</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Slug</td>
+                <td>
+                    <span class="badge @(item.Is_active.GetValueOrDefault() ? "bg-success" : "bg-secondary")">
+                        @(item.Is_active.GetValueOrDefault() ? "Active" : "Inactive")
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bạn có chắc muốn xóa Menu này?');">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

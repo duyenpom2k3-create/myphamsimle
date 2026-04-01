@@ -1,0 +1,49 @@
+@model IEnumerable<MYMVCAPP.Models.ProductModel>
+@{
+    var brand = ViewBag.Brand as MYMVCAPP.Models.BrandModel;
+    ViewData["Title"] = "Sản phẩm của " + brand?.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";   
+}
+<link rel="stylesheet" href="~/css/home.css" />
+<h2 class="text-center text-danger mb-4" style="color:#fe980f">
+    Sản phẩm của thương hiệu @brand?.Name
+</h2>
+
+<div class="container">
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="text-center text-muted">
+                <p>Thương hiệu này hiện chưa có sản phẩm nào.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var product in Model)
+            {
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100 text-center">
+                        <a asp-controller="Product" asp-action="Detail" asp-route-slug="@product.Slug">
+                            <img src="~/images/products/@product.Img" 
+                                 alt="@product.Name" 
+                                 class="card-img-top" 
+                                 style="height:220px;object-fit:contain;" />
+                        </a>
+
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <a asp-controller="Product" 
+                                   asp-action="Detail" 
+                                   asp-route-id="@product.Id"
+                                   class="text-dark text-decoration-none">
+                                   @product.Name
+                                </a>
+                            </h6>
+                            <p class="text-danger fw-bold mb-0">@product.Price.ToString("N0") ₫</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

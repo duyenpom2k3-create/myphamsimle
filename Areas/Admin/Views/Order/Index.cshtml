@@ -1,0 +1,52 @@
+@model IEnumerable<MYMVCAPP.Models.Order>
+
+@{
+    ViewData["Title"] = "Danh sách Đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mb-4 text-primary">@ViewData["Title"]</h2>
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">@TempData["error"]</div>
+}
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Khách hàng</th>
+            <th>Email</th>
+            <th>Điện thoại</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.FullName</td>
+                <td>@order.Email</td>
+                <td>@order.Phone</td>
+                <td>@order.TotalAmount.ToString("N0")</td>
+                <td>@(string.IsNullOrEmpty(order.Status) ? "Chưa cập nhật" : order.Status)</td>
+                <td>@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-info">Xem</a>
+                    <a asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-primary">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@order.Id" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?');">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

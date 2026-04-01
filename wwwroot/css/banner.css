@@ -1,0 +1,185 @@
+/* =================================================================
+   1. THIẾT LẬP CHUNG & CĂN GIỮA
+   ================================================================= */
+   /* TÌM VÀ GHI ĐÈ PADDING/MARGIN CỦA CONTAINER CHA */
+/* Nếu banner nằm trong một Bootstrap Container */
+.container, .container-fluid {
+    /* Quan trọng: Thiết lập padding ngang về 0 cho bố cục full-width/căn giữa */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Nếu banner nằm trong một hàng (row) */
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Nếu banner nằm trong một cột (col-md-12) */
+.col-md-12 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Đảm bảo #bannerCarousel vẫn được căn giữa */
+#bannerCarousel {
+    max-width: 1200px !important; 
+    margin: 0 auto 30px auto !important; /* Quan trọng: Căn giữa khối */
+    width: 100%; 
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+}
+#bannerCarousel {
+    /* 1. Thiết lập chiều rộng cố định (hoặc tối đa) */
+    max-width: 1200px !important; 
+    
+    /* 2. QUAN TRỌNG: Thiết lập margin hai bên là 'auto' để khối tự căn giữa */
+    margin-left: auto !important; 
+    margin-right: auto !important;
+    
+    /* 3. Giữ nguyên chiều rộng 100% để banner responsive khi màn hình nhỏ hơn 1200px */
+    width: 100%; 
+    
+    /* Đảm bảo margin dưới cùng được giữ lại (ví dụ: 30px) */
+    margin-bottom: 30px; 
+    
+    /* Giữ nguyên các thuộc tính khác */
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+}
+
+/* Container Flexbox cho 2 cột */
+.banner-wrapper {
+    display: flex; /* Kích hoạt Flexbox */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: space-between;
+    padding: 40px 60px; /* Khoảng cách bên trong */
+    min-height: 400px; /* Chiều cao tối thiểu của banner */
+    background-color: #f8f8f8; /* Màu nền nhẹ cho banner */
+}
+
+/* =================================================================
+   2. CỘT TEXT (DESCRIPTION)
+   ================================================================= */
+.banner-text {
+    flex: 1; /* Chiếm 1 phần không gian */
+    padding-right: 40px;
+    color: #333;
+}
+
+.banner-text h3 {
+    font-size: 38px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.banner-text h5 {
+    font-size: 24px;
+    color: #e53935; /* Màu nhấn */
+    margin-bottom: 20px;
+}
+
+.banner-text p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+/* =================================================================
+   3. CỘT ẢNH
+   ================================================================= */
+.banner-image {
+    flex: 1; /* Chiếm 1 phần không gian */
+    text-align: center; /* Căn giữa ảnh trong cột của nó */
+}
+
+.banner-image img {
+    /* Đảm bảo ảnh vừa với cột */
+    width: 100%; 
+    max-width: 500px; 
+    height: auto;
+    border-radius: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* =================================================================
+   4. NÚT VÀ CHỈ SỐ
+   ================================================================= */
+/* Nút điều hướng */
+.carousel-control-prev,
+.carousel-control-next {
+    /* Tùy chỉnh để trông gọn hơn */
+    width: 40px; 
+    height: 40px; 
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background: rgba(0,0,0,0.6);
+    opacity: 1;
+}
+
+/* Icon mũi tên */
+.control-arrow i { font-size: 18px; line-height: 40px; }
+
+/* Dấu chấm chỉ số */
+.carousel-indicators {
+    bottom: 15px;
+}
+
+.carousel-indicators li {
+    background: #aaa;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+.carousel-indicators .active {
+    background: #e53935; /* Màu nhấn active */
+}
+
+
+/* =================================================================
+   5. RESPONSIVE (Cho điện thoại và máy tính bảng)
+   ================================================================= */
+@media (max-width: 992px) {
+    .banner-wrapper {
+        /* Chuyển từ hàng ngang sang xếp chồng hàng dọc */
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+        min-height: auto;
+    }
+
+    .banner-text {
+        padding-right: 0;
+        margin-bottom: 20px; /* Khoảng cách giữa text và ảnh */
+    }
+
+    .banner-text h3 {
+        font-size: 30px;
+    }
+
+    .banner-text h5 {
+        font-size: 20px;
+    }
+
+    .banner-image img {
+        /* Ảnh nhỏ hơn trên mobile */
+        width: 80%;
+        max-width: 300px;
+    }
+}

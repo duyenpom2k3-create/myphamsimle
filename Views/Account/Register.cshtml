@@ -1,0 +1,155 @@
+@model MYMVCAPP.Models.UserModel
+@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    /* Thiết lập nền và căn giữa */
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font hiện đại hơn */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        /* Background Gradient đồng bộ với trang Login (tím - hồng - xanh) */
+        background: linear-gradient(135deg, #a83279, #c748b3, #3f87a6);
+    }
+
+    /* Container cho Form */
+    .register-container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px; /* Chiều rộng form */
+        text-align: center;
+    }
+
+    /* Tiêu đề */
+    h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+        font-weight: bold;
+        color: #333; /* Màu đen hiện đại */
+        text-transform: uppercase;
+    }
+
+    /* Form và các nhóm input */
+    form {
+        margin: 0;
+        padding: 0;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+        text-align: left;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    /* Input Fields */
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #009efd; /* Màu xanh nổi bật khi focus */
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 158, 253, 0.3);
+    }
+
+    /* Validation messages */
+    span.text-danger {
+        font-size: 0.85em;
+        color: #e74c3c !important; /* Màu đỏ rõ ràng */
+        display: block;
+        margin-top: 5px;
+    }
+
+    /* Nút Đăng ký */
+    .btn-primary {
+        width: 100%;
+        padding: 14px 15px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 25px;
+        /* Gradient đồng bộ với nút Login */
+        background: linear-gradient(to right, #2af598, #009efd, #7952b3);
+        transition: opacity 0.3s ease, transform 0.2s ease;
+        text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    /* Link Đăng nhập */
+    .login-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    
+    .login-link a {
+        color: #007bff; /* Màu xanh link */
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="register-container">
+    <h2>@ViewData["Title"]</h2>
+
+    <form asp-action="Register" method="post">
+        <div class="form-group">
+            <label>Username</label>
+            <input asp-for="Username" class="form-control" placeholder="Tên đăng nhập" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="Địa chỉ email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Mật khẩu" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Xác nhận Password</label>
+            <input type="password" name="passwordConfirm" class="form-control" placeholder="Nhập lại mật khẩu" />
+            </div>
+        <button class="btn btn-primary" type="submit">ĐĂNG KÝ</button>
+    </form>
+
+    <p class="login-link">
+        Đã có tài khoản? <a asp-action="Login">Đăng nhập</a>
+    </p>
+</div>

@@ -1,0 +1,520 @@
+/* Màu sắc mặc định cho các icon (nếu bạn muốn chúng có cùng kích thước và hình dạng) */
+.social-icons a {
+    font-size: 18px; /* Kích thước icon */
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%; /* Icon hình tròn */
+    transition: all 0.3s ease;
+    border: 1px solid transparent; /* Border mặc định */
+}
+
+/* 1. FACEBOOK: Màu Xanh */
+.social-icons .fa-facebook-f {
+    color: #4267B2; /* Màu Xanh Facebook */
+    border-color: #4267B2;
+}
+
+.social-icons .fa-facebook-f:hover {
+    background-color: #4267B2;
+    color: white;
+}
+
+/* 2. TWITTER/X: Màu Xanh Biển/Xanh Da Trời */
+.social-icons .fa-twitter {
+    color: #1DA1F2; /* Màu Xanh Twitter */
+    border-color: #1DA1F2;
+}
+
+.social-icons .fa-twitter:hover {
+    background-color: #1DA1F2;
+    color: white;
+}
+
+/* 3. LINKEDIN: Màu Xanh Nước Biển Đậm */
+.social-icons .fa-linkedin-in {
+    color: #0077B5; /* Màu Xanh LinkedIn */
+    border-color: #0077B5;
+}
+
+.social-icons .fa-linkedin-in:hover {
+    background-color: #0077B5;
+    color: white;
+}
+
+/* 4. DRIBBBLE: Màu Hồng */
+.social-icons .fa-dribbble {
+    color: #EA4C89; /* Màu Hồng Dribbble */
+    border-color: #EA4C89;
+}
+
+.social-icons .fa-dribbble:hover {
+    background-color: #EA4C89;
+    color: white;
+}
+
+/* 5. GOOGLE: Màu Đỏ/Xanh (Chọn màu đại diện hoặc nhiều màu) */
+/* Thường dùng màu đỏ hoặc màu chuẩn Google Blue */
+.social-icons .fa-google {
+    color: #DB4437; /* Màu Đỏ Google (phổ biến) */
+    border-color: #DB4437;
+}
+
+.social-icons .fa-google:hover {
+    background-color: #DB4437;
+    color: white;
+}
+
+/* --- TÙY CHỌN BỔ SUNG: ZALO (NẾU BẠN TỰ THÊM) --- */
+/* Ví dụ bạn dùng icon điện thoại và tự định màu Zalo */
+.social-icons .fa-phone-square, /* Hoặc icon Zalo tự tạo nếu có */
+.social-icons .zalo-icon { 
+    color: #0088FF; /* Màu Xanh Zalo */
+    border-color: #0088FF;
+}
+
+.social-icons .zalo-icon:hover {
+    background-color: #0088FF;
+    color: white;
+}
+/* Thiết lập cho menu dropdown chính */
+.nav .dropdown {
+    position: relative; /* Quan trọng: Để sub-menu có thể định vị tương đối với mục cha */
+}
+
+/* Định dạng sub-menu */
+.nav .dropdown .sub-menu {
+    position: absolute;
+    top: 100%; /* Đặt sub-menu ngay bên dưới menu cha */
+    left: 0;
+    z-index: 1000; /* Đảm bảo menu nằm trên các thành phần khác */
+    background-color: #fff; /* Nền trắng cho menu con */
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    min-width: 200px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    /* Mặc định ẩn menu con */
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Định dạng các mục trong sub-menu */
+.nav .dropdown .sub-menu li {
+    display: block; /* Mỗi mục chiếm một dòng */
+    padding: 0;
+    margin: 0;
+}
+
+.nav .dropdown .sub-menu li a {
+    display: block;
+    padding: 8px 20px;
+    white-space: nowrap; /* Đảm bảo chữ không bị ngắt dòng */
+    color: #333; /* Màu chữ */
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* Hiệu ứng hover cho các mục con */
+.nav .dropdown .sub-menu li a:hover {
+    background-color: #f5f5f5; /* Nền xám nhạt khi hover */
+    color: #fe980f; /* Màu chủ đạo của bạn (ví dụ: cam) */
+}
+
+/* HIỆU ỨNG HIỂN THỊ: Khi di chuột qua mục cha (li.dropdown) */
+.nav .dropdown:hover > .sub-menu {
+    display: block;
+    opacity: 1;
+}
+
+/* Tùy chỉnh icon mũi tên */
+.nav .dropdown a .fa-angle-down {
+    margin-left: 5px;
+    font-size: 12px;
+}
+.nav .dropdown {
+ position: relative;
+}
+
+/* Sub-menu chính */
+.nav .dropdown .sub-menu {
+ position: absolute;
+ top: 100%;
+ left: 0;
+ z-index: 1000;
+ background-color: #fff;
+ list-style: none;
+ padding: 10px 0;
+ margin: 0;
+ min-width: 200px;
+ border: 1px solid #ddd;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+ display: none;
+ opacity: 0;
+ transition: opacity 0.3s ease-in-out;
+}
+
+/* Mục trong sub-menu */
+.nav .dropdown .sub-menu li {
+ display: block;
+ padding: 0;
+ margin: 0;
+}
+
+/* Liên kết trong sub-menu */
+.nav .dropdown .sub-menu li a {
+ display: block;
+ padding: 8px 20px;
+ white-space: nowrap;
+ color: #333;
+ text-decoration: none;
+ font-size: 14px;
+ transition: all 0.2s ease;
+}
+
+/* Hover trong sub-menu */
+.nav .dropdown .sub-menu li a:hover {
+ background-color: #fff4e0;
+ color: #fe980f;
+}
+
+/* Hiển thị menu khi hover */
+.nav .dropdown:hover > .sub-menu {
+ display: block;
+ opacity: 1;
+}
+
+/* Icon mũi tên xuống */
+.nav .dropdown a .fa-angle-down {
+ margin-left: 5px;
+ font-size: 12px;
+ color: #fe980f;
+}
+
+/* ==============================
+MAIN MENU TEXT COLOR
+=============================== */
+.mainmenu ul.nav > li > a {
+ color: #fe980f;
+ font-weight: 600;
+ text-transform: uppercase;
+ padding: 14px 10px;
+ text-decoration: none;
+ letter-spacing: 0.5px;
+ transition: all 0.3s ease;
+}
+
+/* Hover + Active */
+.mainmenu ul.nav > li > a:hover,
+.mainmenu ul.nav > li.active > a {
+ color: #333;
+ border-bottom: 2px solid #fe980f;
+}
+
+/* Đảm bảo sub-menu không bị lệch */
+.mainmenu ul.sub-menu {
+ top: 100%;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+ .mainmenu ul.nav {
+     flex-direction: column;
+ }
+ .mainmenu ul.nav > li {
+     margin: 5px 0;
+ }
+}
+.nav .dropdown .sub-menu li a {
+    display: block;
+    padding: 8px 20px;
+    white-space: nowrap;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px; /* 👈 nhỏ hơn mặc định (14px → 13px) */
+}
+
+/* ==============================
+MAIN MENU TEXT STYLE
+=============================== */
+.mainmenu ul.nav > li > a {
+    color: #fe980f;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 10px 8px;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+    font-size: 13px; /* 👈 nhỏ hơn mặc định (14–15px → 13px) */
+}
+
+/* Hover + Active */
+.mainmenu ul.nav > li > a:hover,
+.mainmenu ul.nav > li.active > a {
+    color: #333;
+    border-bottom: 2px solid #fe980f;
+}
+
+/* Sub-menu */
+.nav .dropdown .sub-menu li a {
+    display: block;
+    padding: 6px 18px;
+    white-space: nowrap;
+    color: #333;
+    text-decoration: none;
+    font-size: 12.5px; /* 👈 sub-menu nhỏ hơn chút */
+    transition: all 0.2s ease;
+}
+
+/* Hover trong sub-menu */
+.nav .dropdown .sub-menu li a:hover {
+    background-color: #fff4e0;
+    color: #fe980f;
+}
+
+/* Icon mũi tên xuống */
+.nav .dropdown a .fa-angle-down {
+    margin-left: 4px;
+    font-size: 10px;
+    color: #fe980f;
+}
+/* ----- Căn chỉnh hàng ngang cho menu và ô tìm kiếm ----- */
+.menu-wrapper {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+}
+
+.mainmenu ul.nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mainmenu ul.nav li {
+    margin-right: 20px;
+}
+
+.mainmenu ul.nav li a {
+    color: #fe980f;
+    font-size: 13px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 6px 8px;
+}
+
+.mainmenu ul.nav li a:hover {
+    color: #333;
+    border-bottom: 2px solid #fe980f;
+}
+
+/* Ô tìm kiếm */
+.search_box input {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 6px 15px;
+    font-size: 13px;
+    color: #333;
+    width: 100%;
+    max-width: 180px;
+    transition: all 0.3s ease;
+}
+
+.search_box input:focus {
+    outline: none;
+    border-color: #fe980f;
+    box-shadow: 0 0 4px rgba(254, 152, 15, 0.4);
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+    .mainmenu ul.nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .search_box {
+        margin-top: 10px;
+        text-align: left;
+    }
+}
+.carousel {
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.carousel-inner > .item > img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border-radius: 8px;
+}
+/* ----- FIX KÍCH THƯỚC BANNER ----- */
+#bannerCarousel {
+    position: relative;
+    width: 100%;
+    height: 450px; /* ⚙️ chỉnh chiều cao banner theo ý bạn */
+    overflow: hidden;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+#bannerCarousel .carousel-inner {
+    width: 100%;
+    height: 100%;
+}
+
+#bannerCarousel .carousel-inner .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Giữ tỉ lệ, cắt bớt phần dư */
+    object-position: center;
+    border-radius: 10px;
+}
+
+/* ----- CHỮ TRÊN BANNER ----- */
+#bannerCarousel .carousel-caption {
+    background: rgba(0, 0, 0, 0.45);
+    padding: 20px;
+    border-radius: 10px;
+    bottom: 30px;
+}
+
+#bannerCarousel .carousel-caption h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px #000;
+}
+
+#bannerCarousel .carousel-caption h5,
+#bannerCarousel .carousel-caption p {
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+/* ----- NÚT MŨI TÊN ĐIỀU HƯỚNG ----- */
+#bannerCarousel .carousel-control-prev,
+#bannerCarousel .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.45);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+#bannerCarousel .carousel-control-prev:hover,
+#bannerCarousel .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 1;
+}
+
+/* ----- ICON MŨI TÊN ----- */
+#bannerCarousel .carousel-control-prev i,
+#bannerCarousel .carousel-control-next i {
+    color: #fff;
+    font-size: 16px;
+}
+
+/* ----- VỊ TRÍ MŨI TÊN TRÁI / PHẢI ----- */
+#bannerCarousel .carousel-control-prev {
+    left: 15px;
+}
+
+#bannerCarousel .carousel-control-next {
+    right: 15px;
+}
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 768px) {
+    #bannerCarousel {
+        height: 300px;
+    }
+
+    #bannerCarousel .carousel-caption {
+        padding: 10px;
+        bottom: 15px;
+    }
+
+    #bannerCarousel .carousel-caption h3 {
+        font-size: 20px;
+    }
+
+    #bannerCarousel .carousel-control-prev,
+    #bannerCarousel .carousel-control-next {
+        width: 32px;
+        height: 32px;
+    }
+
+    #bannerCarousel .carousel-control-prev i,
+    #bannerCarousel .carousel-control-next i {
+        font-size: 13px;
+    }
+}
+footer {
+    width: 100vw; /* full toàn màn hình */
+    margin: 0;
+    padding: 40px 0;
+    background-color: #ffffff; /* nền trắng */
+    color: #fe980f; /* chữ cam */
+    border-top: 3px solid #fe980f;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto; /* căn giữa nội dung */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.k-footer-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Xóa padding/margin mặc định của danh sách */
+.k-list-unstyled {
+    list-style: none;
+    padding-left: 0; /* Căn sát tiêu đề */
+    margin: 0;
+}
+
+/* Căn chữ của danh mục cùng lề với tiêu đề */
+.k-list-unstyled li {
+    margin-bottom: 5px;
+}
+
+/* Link trong danh mục */
+.k-footer-link {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.k-footer-link:hover {
+    color:  #fe980f; /* Màu chủ đạo của bạn */
+}

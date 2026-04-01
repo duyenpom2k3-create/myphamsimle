@@ -1,0 +1,161 @@
+﻿@using MYMVCAPP.Repository
+@inject DataContext _dataContext
+
+@{
+    // Lấy tất cả headers
+    var headers = _dataContext.Headers.ToList();
+
+    // Logo
+    var logoHeader = headers.FirstOrDefault(h => h.Name.Equals("Logo", StringComparison.OrdinalIgnoreCase));
+
+    // Tell & Email
+    var tellHeader = headers.FirstOrDefault(h => h.Name.Equals("Tell", StringComparison.OrdinalIgnoreCase));
+    var emailHeader = headers.FirstOrDefault(h => h.Name.Equals("Email", StringComparison.OrdinalIgnoreCase));
+
+    // Social icons (Note = "social")
+    var socialHeaders = headers.Where(h => h.Note?.ToLower() == "social").ToList();
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - S-SMILE</title>
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/prettyPhoto.css" />
+    <link rel="stylesheet" href="~/css/price-range.css" />
+    <link rel="stylesheet" href="~/css/animate.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/responsive.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="shortcut icon" href="~/images/home/logo.jpg" />
+    <link rel="apple-touch-icon" href="~/images/icon/user.png" />
+
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header id="header">
+        <div class="header_top">
+            <div class="container">
+                <div class="row">
+                    <!-- Tell & Email -->
+                    <div class="col-sm-6">
+                        <ul class="nav nav-pills">
+                            <li>
+                                @if (tellHeader != null)
+                                {
+                                    var phone = !string.IsNullOrEmpty(tellHeader.Logo) ? tellHeader.Logo : tellHeader.Link;
+                                    if(!string.IsNullOrEmpty(phone))
+                                    {
+                                        <a href="tel:@phone"><i class="fas fa-phone-alt"></i> @phone</a>
+                                    }
+                                }
+                            </li>
+                            <li>
+                                @if (emailHeader != null)
+                                {
+                                    var email = !string.IsNullOrEmpty(emailHeader.Logo) ? emailHeader.Logo : emailHeader.Link;
+                                    if(!string.IsNullOrEmpty(email))
+                                    {
+                                        <a href="mailto:@email"><i class="fas fa-envelope"></i> @email</a>
+                                    }
+                                }
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Social Icons -->
+                    <div class="col-sm-6">
+                        <ul class="nav navbar-nav pull-right social-icons">
+                            @foreach(var item in socialHeaders)
+                            {
+                                string iconClass = item.Logo ?? "fas fa-globe";
+                                string url = item.Link ?? "#";
+                                <li>
+                                    <a href="@url" target="_blank" title="@item.Name">
+                                        <i class="@iconClass"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-middle">
+            <div class="container">
+                <div class="row">
+                    <!-- Logo -->
+                    <div class="col-sm-4">
+                        <a href="@Url.Action("Index", "Home")">
+                            <img src="~/images/home/@logoHeader?.Logo" alt="@logoHeader?.Name ?? "Logo"" style="width:60px;height:auto;" />
+                        </a>
+                    </div>            
+
+                    <!-- Menu người dùng / giỏ hàng -->
+                    <div class="col-sm-8">
+                        <ul class="nav navbar-nav pull-right shop-menu">
+                            <li><a asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a></li>
+
+                            @if (Context.Session.GetInt32("UserId") != null)
+                            {
+                                <li>
+                                    <a asp-controller="User" asp-action="Index"><i class="fas fa-user-circle"></i> @Context.Session.GetString("Username")</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a asp-controller="Account" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            @await Component.InvokeAsync("Menus")
+        </div>
+    </header>
+
+    <!-- BODY -->
+    <main role="main" class="container mt-3">
+        @await Html.PartialAsync("_NotificationPartial")
+        @RenderBody()
+    </main>
+
+    <!-- FOOTER -->
+    @await Component.InvokeAsync("Footer")
+
+    <!-- SCRIPTS -->
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.scrollUp.min.js"></script>
+    <script src="~/js/price-range.js"></script>
+    <script src="~/js/jquery.prettyPhoto.js"></script>
+    <script src="~/js/main.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        // Tự động ẩn thông báo sau 3 giây
+        setTimeout(function () {
+            var alert = document.querySelector(".alert");
+            if (alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

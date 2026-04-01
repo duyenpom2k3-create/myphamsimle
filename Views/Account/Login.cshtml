@@ -1,0 +1,207 @@
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = null;
+}
+
+<style>
+    /* 1. Thiết lập chung và Background */
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        /* Background Gradient (tím - hồng - xanh) */
+        background: linear-gradient(135deg, #a83279, #c748b3, #3f87a6);
+    }
+
+    .login-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+    }
+
+    /* 2. Form Container */
+    .login-form-container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Hiệu ứng nổi mạnh hơn */
+        width: 100%;
+        max-width: 380px; /* Chiều rộng tối đa của form */
+        text-align: center;
+    }
+
+    /* 3. Tiêu đề */
+    .login-form-container h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+        font-weight: 600; /* Đậm hơn */
+        color: #333;
+    }
+
+    /* 4. Form Groups và Inputs */
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .form-group label {
+        display: none; /* Ẩn label để dùng placeholder như mẫu */
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #7952b3; /* Màu tím nhạt khi focus */
+        outline: none;
+        box-shadow: 0 0 5px rgba(121, 82, 179, 0.5);
+    }
+
+    /* 5. Nút Đăng nhập Chính */
+    .login-btn {
+        width: 100%;
+        padding: 14px 15px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        /* Gradient theo mẫu ảnh (xanh - tím - hồng) */
+        background: linear-gradient(to right, #2af598, #009efd, #7952b3);
+        transition: opacity 0.3s ease, transform 0.2s ease;
+        text-transform: uppercase;
+    }
+
+    .login-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    /* 6. Đăng nhập qua mạng xã hội */
+    .social-login-text {
+        margin: 30px 0 15px;
+        color: #777;
+        font-size: 14px;
+        position: relative;
+    }
+
+    .social-login-text::before,
+    .social-login-text::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 30%;
+        height: 1px;
+        background: #ccc;
+    }
+
+    .social-login-text::before {
+        left: 0;
+    }
+
+    .social-login-text::after {
+        right: 0;
+    }
+
+    .social-login-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+
+    .social-btn {
+        padding: 8px 15px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s;
+    }
+
+    .social-btn i {
+        margin-right: 8px;
+    }
+
+    .facebook-btn {
+        color: #4267B2;
+        border-color: #4267B2;
+    }
+
+    .google-btn {
+        color: #DB4437;
+        border-color: #DB4437;
+    }
+
+    /* 7. Link Đăng ký */
+    .signup-link {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #777;
+    }
+
+    .signup-link a {
+        color: #007bff; /* Màu xanh nổi bật */
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .signup-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="login-page">
+    <div class="login-form-container">
+        <h2>Đăng Nhập</h2>
+
+        <form asp-action="Login" method="post" class="login-form">
+            <div class="form-group">
+                <label for="username">Email hoặc tên đăng nhập</label>
+                <input id="username" name="username" class="form-control" placeholder="Email hoặc Username" />
+            </div>
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input id="password" name="password" type="password" class="form-control" placeholder="Password" />
+            </div>
+            <button class="btn login-btn" type="submit">ĐĂNG NHẬP</button>
+        </form>
+
+        <p class="social-login-text">Or login with</p>
+        
+        <div class="social-login-buttons">
+            <a href="#" class="social-btn facebook-btn">
+                <i class="fab fa-facebook-f"></i> Facebook
+            </a>
+            <a href="#" class="social-btn google-btn">
+                <i class="fab fa-google"></i> Google
+            </a>
+        </div>
+
+        <p class="signup-link">
+            Bạn chưa có tài khoản? <a asp-action="Register">Đăng ký</a>
+        </p>
+    </div>
+</div>

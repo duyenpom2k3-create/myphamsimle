@@ -1,0 +1,56 @@
+@model IEnumerable<MYMVCAPP.Models.MenuUserModel>
+@using Microsoft.AspNetCore.Http
+@inject MYMVCAPP.Repository.DataContext _context
+
+<link rel="stylesheet" href="~/css/sidebar.css" />
+
+@{
+    var userId = Context.Session.GetInt32("UserId");
+    string userAvatar = "/images/default-avatar.png";
+    string username = "Khách";
+
+    if (userId != null)
+    {
+        var user = await _context.Users.FindAsync(userId.Value);
+        if (user != null)
+        {
+            username = user.Username;
+            if (!string.IsNullOrEmpty(user.Avatar))
+            {
+                userAvatar = "/images/avatars/" + user.Avatar;
+            }
+        }
+    }
+}
+
+<div class="sidebar">
+    <div class="user-info text-center">
+        <img src="@userAvatar" alt="Avatar" class="avatar"
+             style="width:120px; height:120px; border-radius:50%;" />
+        <div class="user-details mt-2">
+            <p class="greeting">Chào <strong>@username</strong></p>
+            @if (userId != null)
+            {
+                <a asp-controller="Account" asp-action="Logout" class="edit-profile">Đăng xuất</a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="edit-profile">Đăng nhập</a>
+            }
+        </div>
+    </div>
+
+    <hr class="divider" />
+
+    <h3 class="menu-title">Quản lý tài khoản</h3>
+    <ul class="nav-menu">
+        @foreach (var item in Model)
+        {
+            <li class="nav-item">
+                <a asp-controller="User" asp-action="@item.Slug" class="nav-link">
+                    @item.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>

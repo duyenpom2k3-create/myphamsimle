@@ -1,0 +1,97 @@
+@using MYMVCAPP.Models
+@using MYMVCAPP.Models.ViewModels
+@model IEnumerable<WishlistModel>
+
+@{
+    ViewData["Title"] = "Wishlist User & Top Sản Phẩm";
+
+}
+
+<h2>Wishlist User</h2>
+
+<!-- Dropdown chọn user -->
+<form method="get" asp-action="Index">
+    <div class="mb-3">
+        <label for="userSelect">Chọn user:</label>
+        <select id="userSelect" name="userId" class="form-select" onchange="this.form.submit()">
+            <option value="">-- Chọn user --</option>
+            @foreach (var u in (SelectList)ViewBag.Users)
+            {
+                <option value="@u.Value" selected="@(u.Selected ? "selected" : null)">
+                    @u.Text
+                </option>
+            }
+        </select>
+    </div>
+</form>
+
+<!-- Wishlist của user -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@index</td>
+                <td>@item.Product.Name</td>
+                <td>@string.Format("{0:N0}₫", item.Product.Price)</td>
+                <td>
+                    <form asp-action="RemoveFromWishlist" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="hidden" name="userId" value="@ViewBag.UserId" />
+                        <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            index++;
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<h2>Top Sản Phẩm Được Yêu Thích Nhất</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Sản phẩm</th>
+            <th>Số lượt yêu thích</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var topProducts = ViewBag.TopWishlist as List<TopWishlistViewModel>;
+            int topIndex = 1;
+        }
+        @if (topProducts != null && topProducts.Count > 0)
+        {
+            foreach (var item in topProducts)
+            {
+                <tr>
+                    <td>@topIndex</td>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Count</td>
+                </tr>
+                topIndex++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">Chưa có dữ liệu</td>
+            </tr>
+        }
+    </tbody>
+</table>

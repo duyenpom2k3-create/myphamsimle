@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="~/css/sidebar.css" />
+
+@using Microsoft.AspNetCore.Routing
+@using Microsoft.AspNetCore.Http
+@using MYMVCAPP.Repository
+@using MYMVCAPP.Models
+@inject DataContext _context
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var userId = Context.Session.GetInt32("UserId");
+    string userAvatar = "/images/avatars/avatar_3.jpg";
+    string username = "Khách";
+
+    if (userId != null)
+    {
+        var user = await _context.Users.FindAsync(userId.Value);
+        if (user != null)
+        {
+            username = user.Username;
+            if (!string.IsNullOrEmpty(user.Avatar))
+            {
+                userAvatar = "/images/avatars/" + user.Avatar;
+            }
+        }
+    }
+}
+
+<div class="sidebar">
+    <div class="user-info text-center">
+        @if (userId != null)
+        {
+            <form asp-controller="User" asp-action="UploadAvatar" method="post" enctype="multipart/form-data">
+                <label for="avatarInput">
+                    <img src="@userAvatar" alt="Avatar" class="avatar" style="cursor:pointer; width:120px; height:120px; border-radius:50%;" />
+                </label>
+                <input type="file" id="avatarInput" name="AvatarFile" style="display:none;" onchange="this.form.submit();" />
+                <div class="user-details mt-2">
+                    <p class="greeting">Chào <strong>@username</strong></p>
+                    <a asp-controller="Account" asp-action="Logout" class="edit-profile">Đăng xuất</a>
+                </div>
+            </form>
+        }
+        else
+        {
+            <img src="@userAvatar" alt="Avatar" class="avatar" style="width:120px; height:120px; border-radius:50%;" />
+            <div class="user-details mt-2">
+                <p class="greeting">Chào @username</p>
+                <a asp-controller="Account" asp-action="Login" class="edit-profile">Đăng nhập</a>
+            </div>
+        }
+    </div>
+
+    <hr class="divider">
+
+    <h3 class="menu-title">Quản lý tài khoản</h3>
+     <ul class="nav-menu">
+        @foreach (var cat in Model)
+        {
+            <li class="nav-item">
+                <a asp-controller="Category" asp-action="Index" asp-route-slug="@cat.Slug" class="nav-link">
+                    @cat.Name
+                </a>
+            </li>
+        }
+    </ul>
+    @* <ul class="nav-menu">
+        <li class="nav-item @(currentController == "User" && currentAction == "Details" ? "active" : "")">
+            <a href="/User/Details" class="nav-link">Thông tin tài khoản</a>
+        </li>
+        <li class="nav-item @(currentController == "User" && currentAction == "Points" ? "active" : "")">
+            <a href="/User/Points" class="nav-link">Tích điểm</a>
+        </li>
+        <li class="nav-item @(currentController == "User" && currentAction == "Orders" ? "active" : "")">
+            <a href="/User/Orders" class="nav-link">Đơn hàng của tôi</a>
+        </li>
+        <li class="nav-item @(currentController == "Wishlist" && currentAction == "Wishlist" ? "active" : "")">
+            <a href="/Wishlist/Wishlist" class="nav-link">Danh sách yêu thích</a>
+        </li>
+    </ul> *@
+</div>
+
+@* @model List<MYMVCAPP.Models.MenuUserModel>
+
+<div class="sidebar">
+    <h3 class="menu-title">Quản lý tài khoản</h3>
+    <ul class="nav-menu">
+        @foreach (var cat in Model)
+        {
+            <li class="nav-item">
+                <a asp-controller="Category" asp-action="Index" asp-route-slug="@cat.Slug" class="nav-link">
+                    @cat.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div> *@

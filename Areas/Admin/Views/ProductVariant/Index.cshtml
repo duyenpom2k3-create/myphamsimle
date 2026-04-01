@@ -1,0 +1,42 @@
+@model IEnumerable<MYMVCAPP.Models.ProductVariant>
+@{
+    ViewData["Title"] = "Quản lý biến thể sản phẩm";
+}
+
+<h2>@ViewData["Title"]</h2>
+<p>
+    <a asp-action="Create" class="btn btn-success">Thêm biến thể</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ID Product</th>
+            <th>Sản phẩm</th>
+            <th>Màu sắc</th>
+            <th>Khối lượng</th>
+            <th>Giá</th>
+            <th>Tồn kho</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Product?.Id</td>
+                <td>@item.Product?.Name</td>
+                <td>@item.Color</td>
+                <td>@item.Weight</td>
+                <td>@item.Price.ToString("N0") VNĐ</td>
+                <td>@item.Stock</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?');">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

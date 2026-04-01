@@ -1,0 +1,37 @@
+@model IEnumerable<MYMVCAPP.Models.BrandModel>
+
+<style>
+    .brand-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 120px; /* Chiều cao khung logo */
+    }
+
+    .brand-item img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain; /* Giữ tỉ lệ ảnh */
+        transition: transform 0.3s ease;
+    }
+
+    .brand-item img:hover {
+        transform: scale(1.05);
+    }
+</style>
+ 
+
+<div class="container text-center mt-3">
+    <div class="row justify-content-center">
+        @foreach (var brand in Model.Take(12))
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-1 mb-4 brand-item">
+                <a asp-controller="Brand" asp-action="Products" asp-route-slug="@brand.Slug">
+                    <img src="~/images/brand/@brand.Image"
+                         alt="@brand.Name"
+                         class="shadow-sm rounded" />
+                </a>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,31 @@
+@model IEnumerable<MYMVCAPP.Models.ProductModel>
+@{
+    ViewData["Title"] = "Kết quả tìm kiếm";
+}
+
+<h2>Kết quả tìm kiếm cho: "@ViewBag.Keyword"</h2>
+
+@if (!Model.Any())
+{
+    <p>Không tìm thấy sản phẩm nào phù hợp.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var p in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="~/images/products/@p.Img" class="card-img-top" alt="@p.Name" style="max-width:150px; max-height:150px; object-fit:contain;"/>
+                    <div class="card-body">
+                        <h5 class="card-title">@p.Name</h5>
+                        <p class="card-text text-danger fw-bold">@p.Price.ToString("N0") VNĐ</p>
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@p.Id" class="btn btn-outline-danger btn-sm">
+                            Xem chi tiết
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

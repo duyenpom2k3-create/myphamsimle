@@ -1,0 +1,123 @@
+
+@using MYMVCAPP.Models
+@model Order
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+@{
+    ViewData["Title"] = $"Chi tiết đơn hàng #{Model.Id}";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            @await Html.PartialAsync("_UserSidebar")
+        </div>
+
+        <div class="col-md-9">
+            <h3 class="mb-4">Chi tiết đơn hàng #@Model.Id</h3>
+
+            <!-- Thông báo thành công / lỗi -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <div class="card shadow-sm p-4 mb-4">
+                <h5>Thông tin khách hàng</h5>
+                <dl class="row">
+                    <dt class="col-sm-3">Họ và tên</dt>
+                    <dd class="col-sm-9">@Model.FullName</dd>
+
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+
+                    <dt class="col-sm-3">Số điện thoại</dt>
+                    <dd class="col-sm-9">@Model.Phone</dd>
+
+                    <dt class="col-sm-3">Địa chỉ giao hàng</dt>
+                    <dd class="col-sm-9">@Model.Address</dd>
+
+                    <dt class="col-sm-3">Phương thức thanh toán</dt>
+                    <dd class="col-sm-9">@Model.PaymentMethod</dd>
+
+                    <dt class="col-sm-3">Trạng thái</dt>
+                    <dd class="col-sm-9">@Model.Status</dd>
+
+                    <dt class="col-sm-3">Ngày đặt</dt>
+                    <dd class="col-sm-9">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+                </dl>
+            </div>
+
+            <div class="card shadow-sm p-4">
+                <h5>Chi tiết sản phẩm</h5>
+                @if (Model.Items != null && Model.Items.Any())
+                {
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.UnitPrice.ToString("N0") đ</td>
+                                    <td>@((item.UnitPrice * item.Quantity).ToString("N0")) đ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="text-end mt-3">
+                        <p>Subtotal: <strong>@Model.SubTotal.ToString("N0") đ</strong></p>
+                        <p>Shipping Fee: <strong>@Model.ShippingFee.ToString("N0") đ</strong></p>
+                        <p>Discount: <strong>@Model.DiscountAmount.ToString("N0") đ</strong></p>
+                        <h5>Tổng cộng: <strong>@Model.TotalAmount.ToString("N0") đ</strong></h5>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info mt-3">Không có sản phẩm nào trong đơn hàng này.</div>
+                }
+            </div>
+
+            <div class="mt-3">
+                 <a asp-action="Orders" class="btn btn-secondary mt-3">
+                <i class="fa fa-arrow-left me-2"></i> Quay lại danh sách đơn hàng
+            </a>
+
+                @* Nút hủy đơn chỉ hiện khi chưa hủy và chưa giao *@
+                @if (Model.Status != "Đã hủy" && Model.Status != "Đã giao")
+                {
+                    <form asp-action="CancelOrder" asp-controller="Order" method="post" class="d-inline ms-2">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này không?');">
+                            <i class="fa fa-times me-2"></i> Hủy đơn hàng
+                        </button>
+                    </form>
+                }
+                else if (Model.Status == "Đã hủy")
+                {
+                    <p class="text-danger mt-3"><strong>Đơn hàng này đã bị hủy.</strong></p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

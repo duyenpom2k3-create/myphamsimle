@@ -1,0 +1,38 @@
+@model IEnumerable<MYMVCAPP.Models.FooterItem>
+@{
+    ViewData["Title"] = "Danh sách Footer Item";
+}
+<h2 class="mb-3">Danh sách Footer Item</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">+ Thêm mới</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Loại</th>
+            <th>Tiêu đề</th>
+            <th>Slug</th>
+            <th>Thứ tự</th>
+            <th>Nội dung</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.ItemType</td>
+                <td>@item.ItemTitle</td>
+                <td>@item.Slug</td>
+                <td>@item.DisplayOrder</td>
+                <td>@item.Content</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

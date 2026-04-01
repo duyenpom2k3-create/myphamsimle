@@ -1,0 +1,42 @@
+@model IEnumerable<MYMVCAPP.Models.MenuUserModel>
+
+<h2 class="text-center mb-4 text-primary">Quản lý Menu người dùng</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">Thêm Menu</a>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
+        <tr class="text-center">
+            <th>#</th>
+            <th>Tên Menu</th>
+            <th>Slug</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">@index</td>
+                    <td>@item.Name</td>
+                    <td>@item.Slug</td>
+                    <td class="text-center">
+                        <span class="badge @(item.Is_active == true ? "bg-success" : "bg-secondary")">
+                            @(item.Is_active == true ? "Hiển thị" : "Ẩn")
+                        </span>
+                    </td>
+
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger"
+                           onclick="return confirm('Xóa menu này?');">Xóa</a>
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+    </tbody>
+</table>

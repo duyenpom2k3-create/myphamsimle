@@ -1,0 +1,179 @@
+@model MYMVCAPP.Models.Order
+@{
+    ViewData["Title"] = "HÓA ĐƠN GIAO HÀNG";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@{
+    var company = ViewBag.Company as Dictionary<string, string>;
+}
+
+<div id="invoice-section" style="max-width:900px; margin:0 auto; background:#fff; border:2px solid #c00; padding:25px; font-family:'Times New Roman', serif; font-size:15px; line-height:1.6;">
+    
+    <!-- Header -->
+    <div style="text-align:center; border-bottom:2px solid #c00; padding-bottom:10px; margin-bottom:15px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <img src="~/images/home/logo.jpg" alt="Logo" style="max-height:50px;">
+        </div>
+        <h2 style="color:#c00; margin:0;">HÓA ĐƠN GIAO HÀNG</h2>
+        <p style="margin:2px 0; font-style:italic;">(Bản thể hiện của hóa đơn điện tử)</p>
+        <p style="margin:2px 0;">Ngày @Model.CreatedAt.ToString("dd") tháng @Model.CreatedAt.ToString("MM") năm @Model.CreatedAt.ToString("yyyy")</p>
+    </div>
+
+   <div style="margin-bottom:10px;">
+    <table style="width:100%;">
+        <tr>
+            <td style="width:50%; vertical-align:top;">
+                <strong>Đơn vị bán hàng:</strong> @(company.ContainsKey("NAME") ? company["NAME"] : "") <br />
+                <strong>@(company.ContainsKey("MST") ? company["MST"] : "MST: ...")</strong><br />
+                <strong>@(company.ContainsKey("ADDRESS") ? company["ADDRESS"] : "Địa chỉ: ...")</strong><br />
+                <strong>@(company.ContainsKey("HOTLINE") ? company["HOTLINE"] : "Hotline: ...")</strong>
+            </td>
+            <td style="width:50%; vertical-align:top;">
+                <strong>@(company.ContainsKey("EMAIL") ? company["EMAIL"] : "Email: ...")</strong><br />
+                <strong>Ký hiệu:</strong> AA/25E<br />
+                <strong>Số:</strong> 000001
+            </td>
+        </tr>
+    </table>
+</div>
+
+    <hr style="border:1px solid #c00; margin:10px 0;" />
+
+    <!-- Thông tin khách hàng -->
+    <div style="margin-bottom:15px;">
+        <table style="width:100%;">
+            <tr><td><strong>Họ tên người mua hàng:</strong> @Model.FullName</td></tr>
+            <tr>
+                <td style="word-wrap: break-word; white-space: normal; max-width: 300px;">
+                    <strong>Địa chỉ:</strong> @Model.Address
+                </td>
+            </tr>
+
+            <tr><td><strong>Hình thức thanh toán:</strong> @Model.PaymentMethod</td></tr>
+            <tr><td><strong>Số điện thoại:</strong> @Model.Phone</td></tr>
+        </table>
+    </div>
+
+    <!-- Bảng sản phẩm -->
+    <table style="width:100%; border-collapse:collapse; text-align:center; margin-bottom:10px;">
+        <thead>
+            
+            <tr style="background:#f9dcdc; color:#000;">
+                <th style="border:1px solid #c00; padding:5px;">STT</th>
+                <th style="border:1px solid #c00; padding:5px;">Tên hàng hoá</th>
+                <th style="border:1px solid #c00; padding:5px;">Màu sắc</th>
+                <th style="border:1px solid #c00; padding:5px;">Khối lượng</th>
+                <th style="border:1px solid #c00; padding:5px;">ĐVT</th>
+                <th style="border:1px solid #c00; padding:5px;">Số lượng</th>
+                <th style="border:1px solid #c00; padding:5px;">Đơn giá</th>
+                <th style="border:1px solid #c00; padding:5px;">Thành tiền</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int stt = 1;
+                decimal tong = 0;
+            }
+            @foreach (var item in Model.Items)
+            {
+                var thanhTien = Convert.ToDecimal(item.Quantity) * Convert.ToDecimal(item.UnitPrice);
+                tong += thanhTien;
+                <tr>
+                    <td style="border:1px solid #c00; padding:5px;">@stt</td>
+                    <td style="border:1px solid #c00; padding:5px; text-align:left;">@item.ProductName</td>
+                    <td style="border:1px solid #c00; padding:5px;">@item.Color</td>
+                    <td style="border:1px solid #c00; padding:5px;">@item.Weight</td>
+                    <td style="border:1px solid #c00; padding:5px;">Chiếc</td>
+                    <td style="border:1px solid #c00; padding:5px;">@item.Quantity</td>
+                    <td style="border:1px solid #c00; padding:5px;">@item.UnitPrice.ToString("N0")</td>
+                    <td style="border:1px solid #c00; padding:5px;">@thanhTien.ToString("N0")</td>
+                </tr>
+                stt++;
+            }
+        </tbody>
+    </table>
+
+    <!-- Tổng kết -->
+   @{
+    var free = Model.ShippingFee;
+    var tongThanhToan = tong + free;
+}
+
+
+    <table style="width:100%; border-collapse:collapse; text-align:right; font-weight:bold;">
+        <tr>
+            <td style="padding:5px;">Cộng tiền hàng hóa, dịch vụ:</td>
+            <td style="padding:5px; width:150px;">@tong.ToString("N0")</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;">Phí vận chuyển</td>
+            <td style="padding:5px;">@free.ToString("N0")</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;">Tổng cộng tiền thanh toán:</td>
+            <td style="padding:5px; color:#c00;">@tongThanhToan.ToString("N0") ₫</td>
+        </tr>
+    </table>
+
+    <!-- Chữ viết -->
+    <p style="margin-top:10px; font-style:italic;">
+        Số tiền viết bằng chữ: <strong>@NumberToWords((long)tongThanhToan)</strong> đồng chẵn.
+    </p>
+
+    <!-- Ký tên -->
+    <div style="display:flex; justify-content:space-between; margin-top:40px; text-align:center;">
+        <div style="width:45%;">
+            <strong>Người mua hàng</strong><br />
+            <em>(Ký, ghi rõ họ tên)</em>
+        </div>
+        <div style="width:45%;">
+            <strong>Người bán hàng</strong><br />
+            <em>(Ký, ghi rõ họ tên)</em>
+        </div>
+    </div>
+</div>
+
+<!-- Nút in -->
+<div style="text-align:center; margin-top:20px;">
+    <button class="btn btn-danger" onclick="printInvoice()">🖨️ In hóa đơn</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</div>
+
+<script>
+    function printInvoice() {
+        var printContents = document.getElementById("invoice-section").innerHTML;
+        var printWindow = window.open('', '', 'height=800,width=700');
+        printWindow.document.write('<html><head><title>In hóa đơn</title>');
+        printWindow.document.write('<style>body{font-family:Times New Roman,serif;}</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
+
+@functions {
+    // Hàm chuyển số sang chữ tiếng Việt (đơn giản)
+    public static string NumberToWords(long number)
+    {
+        if (number == 0) return "không";
+        string[] units = { "", "nghìn", "triệu", "tỷ" };
+        string[] tens = { "", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín" };
+        string words = "";
+        int unitIndex = 0;
+        while (number > 0)
+        {
+            int threeDigits = (int)(number % 1000);
+            if (threeDigits > 0)
+            {
+                string part = $"{tens[threeDigits / 100]} trăm {tens[(threeDigits / 10) % 10]} mươi {tens[threeDigits % 10]}";
+                words = part + " " + units[unitIndex] + " " + words;
+            }
+            number /= 1000;
+            unitIndex++;
+        }
+        return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(words.Trim());
+    }
+}

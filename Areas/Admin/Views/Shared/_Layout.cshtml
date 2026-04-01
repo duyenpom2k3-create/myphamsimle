@@ -1,0 +1,155 @@
+﻿@using MYMVCAPP.Repository
+@inject DataContext _dataContext
+
+@{
+    var header = _dataContext.Headers.FirstOrDefault(); // Lấy logo đầu tiên
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin S-SMILE</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p3KXrZ3U3I1lIwtz9C+Fk4iXKd2AqT1R/qyVZw+u2+Vq2VcH30aH7DFxQ0J6IuN6+4xX8pDyzsX0LM7PaBoT2Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/prettyPhoto.css" />
+    <link rel="stylesheet" href="~/css/price-range.css" />
+    <link rel="stylesheet" href="~/css/animate.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/responsive.css" />
+
+    <link rel="shortcut icon" href="~/images/home/logo.jpg" />
+    <link rel="apple-touch-icon" href="~/images/icon/user.png" />
+
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+<header id="header">
+
+    <!-- header_top -->
+    <div class="header_top">
+        <div class="container">
+            <div class="row"></div>
+        </div>
+    </div>
+
+    <!-- header-middle -->
+    <div class="header-middle">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <a href="@(header?.Link ?? Url.Action("Index", "Home"))">
+                        <img src="~/images/home/@(header?.Logo ?? "logo.jpg")"
+                             alt="@(header?.Name ?? "Logo")"
+                             style="width:60px;height:auto;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- header-bottom -->
+    <div class="header-bottom">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-sm-9">
+                    <div class="mainmenu">
+                        <ul class="nav navbar-nav collapse navbar-collapse">
+
+                            <li><a asp-controller="Admin" asp-action="Index" class="active">Trang Chủ</a></li>
+
+                            <li class="dropdown">
+                                <a href="#">Người dùng <i class="fa fa-angle-down"></i></a>
+                                <ul role="menu" class="sub-menu">
+                                    <li><a asp-controller="User" asp-action="Index">Quản lý người dùng</a></li>
+                                    <li><a asp-controller="MenuUser" asp-action="Index">Quản lý giao diện người dùng</a></li>
+                                    <li><a asp-controller="Wishlist" asp-action="Index">Quản lý mục yêu thích</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#">Sản phẩm <i class="fa fa-angle-down"></i></a>
+                                <ul role="menu" class="sub-menu">
+                                    <li><a asp-controller="Product" asp-action="Index">Sản phẩm</a></li>
+                                    <li><a asp-controller="ProductVariant" asp-action="Index">Chi tiết sản phẩm</a></li>
+                                    <li><a asp-controller="Brand" asp-action="Index">Thương hiệu</a></li>
+                                    <li><a asp-controller="Category" asp-action="Index">Danh mục</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#">Đơn hàng <i class="fa fa-angle-down"></i></a>
+                                <ul role="menu" class="sub-menu">
+                                    <li><a asp-controller="Order" asp-action="Index">Đơn hàng</a></li>
+                                    <li><a asp-controller="Report" asp-action="Index">Thống kê</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#">Giao diện <i class="fa fa-angle-down"></i></a>
+                                <ul role="menu" class="sub-menu">
+                                    <li><a asp-controller="Menu" asp-action="Index">Menu</a></li>
+                                    <li><a asp-controller="Header" asp-action="Index">Header</a></li> @* Sửa đúng controller *@
+                                    <li><a asp-controller="FooterItem" asp-action="Index">Footer</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#">Khuyến mãi <i class="fa fa-angle-down"></i></a>
+                                <ul role="menu" class="sub-menu">
+                                    <li><a asp-controller="Voucher" asp-action="Index">Voucher</a></li>
+                                    <li><a asp-controller="Ship" asp-action="Index">Freeship</a></li>
+                                    <li><a asp-controller="Sale" asp-action="Index">Siêu sale</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a asp-area="" asp-controller="Account" asp-action="Logout" class="active">
+                                    <i class="fas fa-sign-out-alt me-1"></i> Đăng Xuất
+                                </a>
+
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <form asp-controller="Product" asp-action="Search" method="get">
+    <div class="search_box pull-right">
+        <input type="text" name="keyword" placeholder="Tìm kiếm..." />
+    </div>
+</form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<main role="main" class="container mt-3">
+    @await Html.PartialAsync("_NotificationPartial")
+    @RenderBody()
+</main>
+
+<footer id="footer"></footer>
+
+<script src="~/js/jquery.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.scrollUp.min.js"></script>
+<script src="~/js/price-range.js"></script>
+<script src="~/js/jquery.prettyPhoto.js"></script>
+<script src="~/js/main.js"></script>
+
+@RenderSection("Scripts", required: false)
+</body>
+</html>

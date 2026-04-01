@@ -1,0 +1,48 @@
+@model MYMVCAPP.Models.CategoryModel
+
+@{
+    ViewData["Title"] = "Thêm danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center text-danger mb-4">@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label>Tên danh mục</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MenuId" class="form-label">Menu</label>
+        <select asp-for="MenuId" asp-items="ViewBag.Menus" class="form-select">
+            <option value="">-- Chọn Menu --</option>
+        </select>
+        <span asp-validation-for="MenuId" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label>Trạng thái</label>
+        <select asp-for="Status" class="form-select">
+            <option value="1">Hoạt động</option>
+            <option value="0">Ẩn</option>
+        </select>
+    </div>
+
+    <button class="btn btn-primary">Thêm danh mục</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

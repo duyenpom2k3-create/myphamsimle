@@ -1,0 +1,58 @@
+@model IEnumerable<MYMVCAPP.Models.Order>
+
+@{
+    ViewData["Title"] = "Mua lại";
+}
+
+<div class="container py-5">
+    <h3 class="mb-4">Đơn hàng của tôi</h3>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var order in Model)
+                    {
+                        <tr>
+                            <td>@order.Id</td>
+                            <td>@order.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>@order.TotalAmount.ToString("N0") VNĐ</td>
+                            <td>@order.Status</td>
+                            <td>
+                                <form asp-action="ReorderItems" method="post">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-cart-plus"></i> Đặt lại
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p>Bạn chưa có đơn hàng nào.</p>
+    }
+</div>

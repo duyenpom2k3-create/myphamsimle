@@ -1,0 +1,128 @@
+@model MYMVCAPP.Models.ViewModels.ReportCompareModel
+@{
+    ViewData["Title"] = "Báo cáo so sánh doanh thu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var company = ViewBag.Company as Dictionary<string, string>;
+
+    var totalThis = Model.CategoryReports?.Sum(c => c.RevenueThisYear) ?? 0m;
+    var totalLast = Model.CategoryReports?.Sum(c => c.RevenueLastYear) ?? 0m;
+    var totalDiff = totalThis - totalLast;
+    var diffText = (totalDiff >= 0 ? "TĂNG" : "GIẢM");
+}
+
+<h3 style="color:#c00; text-align:center; margin-bottom:20px;">Biểu đồ doanh thu theo năm</h3>
+
+<div style="width:100%; text-align:center; margin-bottom:15px;">
+    <select id="yearSelect" style="padding:5px 10px; border:1px solid #c00; border-radius:4px;">
+        <option value="@Model.YearNow">Năm @Model.YearNow</option>
+        <option value="@Model.YearPrev">Năm @Model.YearPrev</option>
+    </select>
+</div>
+
+<canvas id="revenueChart" style="width:100%; max-width:800px; height:350px; margin:0 auto; display:block;"></canvas>
+
+<br />
+
+<div id="report-section" style="max-width:900px; margin:0 auto; background:#fff; border:2px solid #c00; padding:25px; font-family:'Times New Roman', serif; font-size:15px; line-height:1.6;">
+
+    <div style="text-align:center; border-bottom:2px solid #c00; padding-bottom:10px; margin-bottom:15px;">
+        <img src="~/images/home/logo.jpg" style="max-height:50px; margin-bottom:10px;">
+        <h2 style="color:#c00; margin:0;">BÁO CÁO TỔNG HỢP SO SÁNH DOANH THU</h2>
+        <p style="margin:2px 0; font-style:italic;">Năm so sánh: @Model.YearPrev và @Model.YearNow</p>
+    </div>
+
+    <table style="width:100%;">
+        <tr>
+            <td style="width:50%; vertical-align:top;">
+                <strong>Đơn vị báo cáo:</strong> @company["NAME"] <br />
+                <strong>MST:</strong> @company["MST"] <br />
+                <strong>Địa chỉ:</strong> @company["ADDRESS"] <br />
+                <strong>Hotline:</strong> @company["HOTLINE"]
+            </td>
+
+            <td style="width:50%; border:1px solid #c00; padding:10px;">
+                <div><strong>Tổng năm @Model.YearNow:</strong> <span style="float:right;">@totalThis.ToString("N0") ₫</span></div>
+                <div><strong>Tổng năm @Model.YearPrev:</strong> <span style="float:right;">@totalLast.ToString("N0") ₫</span></div>
+                <hr />
+                <div style="font-weight:bold; color:@(totalDiff >= 0 ? "green" : "#c00");">
+                    CHÊNH LỆCH (@diffText): <span style="float:right;">@Math.Abs(totalDiff).ToString("N0") ₫</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <hr />
+    <h3 style="color:#c00;">CHI TIẾT DOANH THU THEO DANH MỤC</h3>
+
+    <table style="width:100%; border-collapse:collapse; text-align:center;">
+        <thead>
+        <tr style="background:#f9dcdc;">
+            <th style="border:1px solid #c00;">STT</th>
+            <th style="border:1px solid #c00;">Danh mục</th>
+            <th style="border:1px solid #c00;">@Model.YearPrev (₫)</th>
+            <th style="border:1px solid #c00;">@Model.YearNow (₫)</th>
+            <th style="border:1px solid #c00;">Chênh lệch</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            int stt = 1;
+            foreach (var item in Model.CategoryReports.OrderByDescending(c => c.Total))
+            {
+                <tr>
+                    <td style="border:1px solid #c00;">@stt</td>
+                    <td style="border:1px solid #c00; text-align:left;">@item.CategoryName</td>
+                    <td style="border:1px solid #c00; text-align:right;">@item.RevenueLastYear.ToString("N0")</td>
+                    <td style="border:1px solid #c00; text-align:right;">@item.RevenueThisYear.ToString("N0")</td>
+                    <td style="border:1px solid #c00; text-align:right; color:@(item.Difference >= 0 ? "green" : "#c00");">
+                        @item.Difference.ToString("N0")
+                    </td>
+                </tr>
+                stt++;
+            }
+        }
+        </tbody>
+    </table>
+
+    <div style="display:flex; justify-content:space-between; margin-top:40px; text-align:center;">
+        <div><strong>Người lập</strong><br /><em>(Ký, ghi rõ họ tên)</em></div>
+        <div><strong>Giám đốc</strong><br /><em>(Ký, đóng dấu)</em></div>
+    </div>
+</div>
+
+<div style="text-align:center; margin-top:15px;">
+    <button class="btn btn-danger no-print" onclick="printReport()">🖨 In báo cáo</button>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const categoryLabels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.CategoryReports.Select(c => c.CategoryName)));
+const revenueData = {
+    "@Model.YearPrev": @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.CategoryReports.Select(c => c.RevenueLastYear))),
+    "@Model.YearNow":  @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.CategoryReports.Select(c => c.RevenueThisYear)))
+};
+
+let year = "@Model.YearNow";
+const ctx = document.getElementById('revenueChart');
+
+let chart = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: categoryLabels, datasets: [{ label: `Doanh thu ${year}`, data: revenueData[year], backgroundColor: '#c00' }] },
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+});
+
+document.getElementById("yearSelect").addEventListener("change", function () {
+    year = this.value;
+    chart.data.datasets[0].label = `Doanh thu ${year}`;
+    chart.data.datasets[0].data = revenueData[year];
+    chart.update();
+});
+
+function printReport() {
+    window.print();
+}
+</script>
+}

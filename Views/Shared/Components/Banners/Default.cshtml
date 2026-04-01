@@ -1,0 +1,63 @@
+@model IEnumerable<MYMVCAPP.Models.BannerModel>
+<link rel="stylesheet" href="~/css/banner.css" />
+
+@if (Model != null && Model.Any())
+{
+    <div id="bannerCarousel" class="carousel slide" data-ride="carousel" data-interval="4000">
+        <ol class="carousel-indicators">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <li data-target="#bannerCarousel" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+            }
+        </ol>
+
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var banner = Model.ElementAt(i);
+                <div class="item @(i == 0 ? "active" : "")">
+                    
+                    <div class="banner-wrapper">
+                        
+                        <div class="banner-text">
+                            <h3>@banner.Title</h3>
+                            @if (!string.IsNullOrEmpty(banner.Sub_Title))
+                            {
+                                <h5>@banner.Sub_Title</h5>
+                            }
+                            @if (!string.IsNullOrEmpty(banner.Description))
+                            {
+                                <p>@banner.Description</p>
+                            }
+                            </div>
+
+                        <div class="banner-image">
+                            <img src="~/images/banners/@banner.Image_Url"
+                                 alt="@banner.Title"
+                                 class="img-responsive" />
+                        </div>
+                    </div>
+                    @* Xóa hoặc bỏ qua carousel-caption cũ *@
+                </div>
+                
+            }
+            
+        </div>
+
+        <a class="carousel-control-prev" href="#bannerCarousel" role="button" data-slide="prev">
+            <span class="control-arrow"><i class="fas fa-chevron-left"></i></span>
+        </a>
+        <a class="carousel-control-next" href="#bannerCarousel" role="button" data-slide="next">
+            <span class="control-arrow"><i class="fas fa-chevron-right"></i></span>
+        </a>
+
+    </div>
+
+    <script>
+        // Kích hoạt carousel tự động
+        $('#bannerCarousel').carousel({
+            interval: 4000, // 4 giây đổi ảnh
+            pause: "hover"  // dừng khi hover
+        });
+    </script>
+}

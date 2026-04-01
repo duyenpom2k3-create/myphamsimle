@@ -1,0 +1,104 @@
+@using MYMVCAPP.Repository
+@inject DataContext _dataContext
+@model MYMVCAPP.Models.FooterViewModel
+<link rel="stylesheet" href="~/css/header.css">
+@{
+    var headers = _dataContext.Headers.ToList();
+    // Social icons (Note = "social")
+    var socialHeaders = headers.Where(h => h.Note?.ToLower() == "social").ToList();
+}
+
+
+<footer class="k-footer-bg mt-5">
+    <div class="container py-4 py-md-5">
+        <div class="row">
+
+            <!-- CÔNG TY -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="k-footer-title">CÔNG TY TNHH SMILE</h5>
+                <div class="k-company-info">
+                    @foreach (var item in Model.CompanyItems)
+                    {
+                        <div class="k-info-line">@Html.Raw(item.ItemTitle)</div>
+                    }
+                </div>
+            </div>
+
+            <!-- THÔNG TIN HỖ TRỢ -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="k-footer-title">THÔNG TIN HỖ TRỢ</h5>
+                <ul class="k-list-unstyled">
+                    @foreach (var item in Model.PolicyItems)
+                    {
+                        <!-- 🟢 Khi click sẽ đi theo đường dẫn Slug -->
+                        <li>
+                            <a href="/@item.Slug" class="k-footer-link">
+                                @item.ItemTitle
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <!-- DANH MỤC CHÍNH -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="k-footer-title">DANH MỤC CHÍNH</h5>
+                <ul class="k-list-unstyled ps-0">
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <li>
+                            <a href="/category/@cat.Slug" class="k-footer-link">
+                                @cat.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <!-- THEO DÕI CHÚNG TÔI -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="k-footer-title">THEO DÕI CHÚNG TÔI</h5>
+                <div class="mb-3">
+                        @foreach (var item in Model.FollowItems)
+                        {
+                            
+                               <a>
+                                <div class="k-info-line">@Html.Raw(item.ItemTitle)</div>
+                                </a>
+                           
+                        }
+                </div>
+                <div class="input-group mb-4 k-email-signup">
+                    <input type="email" class="form-control" placeholder="Email" aria-label="Email đăng ký">
+                    <button class="btn k-btn-primary" type="button">GỬI</button>
+                </div>
+                <!-- Social Icons -->
+                    <div class="k-social-icons mb-6">
+                        <ul class="nav navbar-nav pull-right social-icons">
+                            @foreach(var item in socialHeaders)
+                            {
+                                string iconClass = item.Logo ?? "fas fa-globe";
+                                string url = item.Link ?? "#";
+                                <li>
+                                    <a href="@url" target="_blank" title="@item.Name">
+                                        <i class="@iconClass"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                @* <div class="k-social-icons mb-4">
+                    <a href="#" class="k-social-icon k-icon-facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="k-social-icon k-icon-instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="k-social-icon k-icon-linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="k-social-icon k-icon-youtube"><i class="fab fa-youtube"></i></a>
+                </div> *@
+                @* <div class="k-certifications d-flex align-items-center">
+                    <img src="~/images/logo-da-thong-bao.png" alt="Đã Thông Báo Bộ Công Thương" class="img-fluid me-2" style="max-height: 50px;">
+                    <img src="~/images/logo-dmca.png" alt="DMCA Protected" class="img-fluid" style="max-height: 50px;">
+                </div> *@
+            </div>
+
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,32 @@
+@model MYMVCAPP.Models.MenuUserModel
+
+<h3>@ViewData["Title"]</h3>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Tên Menu</label>
+        <input class="form-control" asp-for="Name" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Slug</label>
+        <input class="form-control" asp-for="Slug" />
+    </div>
+
+    <div class="form-check mb-1">
+        <input class="form-check-input" asp-for="Is_active" />
+        <label class="form-check-label">Hiển thị</label>
+    </div>
+
+    <!-- Ghi chú -->
+    <small class="text-muted">
+       <div> * True: Menu sẽ được hiển thị trên hệ thống  </div>
+       <div> * False: Menu sẽ bị ẩn, không hiển thị cho người dùng  </div>
+        
+    </small>
+
+    <div class="mt-3">
+        <button class="btn btn-success">Lưu</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </div>
+</form>

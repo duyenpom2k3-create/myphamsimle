@@ -1,0 +1,151 @@
+@using MYMVCAPP.Models
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var variants = Model.Variants as IEnumerable<ProductVariant> ?? Enumerable.Empty<ProductVariant>();
+    var hasColor = variants.Any(v => !string.IsNullOrEmpty(v.Color));
+    var hasWeight = variants.Any(v => !string.IsNullOrEmpty(v.Weight));
+
+    var recommendedProducts = (ViewBag.RecommendedProducts as IEnumerable<ProductModel>) ?? Enumerable.Empty<ProductModel>();
+    int productCount = 0;
+    int itemsPerSlide = 3;
+}
+
+<div class="row">
+    <div class="col-sm-12 padding-right">
+        <div class="product-details row">
+            <div class="col-sm-5">
+                <div class="view-product">
+                    <img src="~/images/products/@Model.Img" alt="@Model.Name" class="img-fluid product-image" 
+                         style="max-width:500px; max-height:550px; object-fit:contain;" />
+                </div>
+            </div>
+
+            <div class="col-sm-7">
+                <div class="product-information">
+                    <h2>@Model.Name</h2>
+
+                    <span>
+                        <span id="productPrice">@Model.Price.ToString("N0") VNĐ</span>
+                        <label>Số lượng:</label>
+                        <input type="number" id="quantity" value="1" min="1" class="form-control" style="width:80px; display:inline-block;" />
+
+                        <div class="mt-2">
+                            @if (hasColor)
+                            {
+                                <label>Chọn màu:</label>
+                                <select id="variantSelect" class="form-control" style="width:150px; display:inline-block;">
+                                    @foreach (var v in variants)
+                                    {
+                                        <option value="@v.Id" data-price="@v.Price">@v.Color</option>
+                                    }
+                                </select>
+                            }
+                            else if (hasWeight)
+                            {
+                                <label>Chọn khối lượng:</label>
+                                <select id="variantSelect" class="form-control" style="width:150px; display:inline-block;">
+                                    @foreach (var v in variants)
+                                    {
+                                        <option value="@v.Id" data-price="@v.Price">@v.Weight</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+
+                        <a id="addToCartBtn" class="btn btn-default add-to-cart mt-2" href="#">
+                            <i class="fa fa-plus-square"></i> Thêm vào giỏ hàng
+                        </a>
+                    </span>
+
+                    <p><b>Thương hiệu:</b> @Model.Brand?.Name</p>
+                    <p><b>Danh mục:</b> @Model.Category?.Name</p>
+                </div>
+            </div>
+        </div>
+
+      <!-- Sản phẩm gợi ý -->
+        <h2 class="title text-center">SẢN PHẨM GỢI Ý</h2>
+        <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @foreach (var product in recommendedProducts)
+                {
+                    if (productCount % itemsPerSlide == 0)
+                    {
+                        @:<div class="item @(productCount == 0 ? "active" : "")">
+                    }
+
+                    <div class="col-sm-4">
+                        <div class="product-image-wrapper text-center">
+                            <div class="single-products">
+                                <div class="productinfo text-center">
+                                    <a asp-action="Details" asp-controller="Product" asp-route-Id="@product.Id">
+                                        @if (!string.IsNullOrEmpty(product.Img))
+                                        {
+                                            <img src="@Url.Content("~/images/products/" + product.Img)" alt="@product.Name" style="max-width:150px; max-height:150px; object-fit:contain;" />
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted" style="height:150px; display:flex; align-items:center; justify-content:center;">Chưa có ảnh</span>
+                                        }
+                                    </a>
+                                    <h2>@product.Price.ToString("N0") VNĐ</h2>
+                                    <p>
+                                        <a asp-action="Details" asp-controller="Product" asp-route-Id="@product.Id" style="text-decoration:none; color:inherit;">
+                                            @product.Name
+                                        </a>
+                                    </p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    productCount++;
+                    if (productCount % itemsPerSlide == 0 || productCount == recommendedProducts.Count())
+                    {
+                        @:</div>
+                    }
+                }
+            </div>
+
+            <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const priceSpan = document.getElementById('productPrice');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const variantSelect = document.getElementById('variantSelect');
+    const baseUrl = '@Url.Action("Add", "Cart")';
+
+    if (variantSelect) {
+        variantSelect.addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+            const price = Number(selected.dataset.price).toLocaleString();
+            const variantId = selected.value;
+            priceSpan.textContent = price + ' VNĐ';
+            addToCartBtn.href = `${baseUrl}?variantId=${variantId}`;
+        });
+
+        // Gọi lần đầu
+        variantSelect.dispatchEvent(new Event('change'));
+    } else {
+        addToCartBtn.href = `${baseUrl}?productId=@Model.Id`;
+    }
+});
+</script>
+

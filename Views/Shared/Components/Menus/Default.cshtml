@@ -1,0 +1,62 @@
+@model IEnumerable<MYMVCAPP.Models.MenuModel>
+<link rel="stylesheet" href="~/css/head.css" />
+<link rel="stylesheet" href="~/css/main.css" />
+
+<div class="header-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Menu -->
+            <div class="col-md-8 col-12 d-flex align-items-center">
+                <div class="mainmenu flex-grow-1">
+                    <ul class="nav navbar-nav collapse navbar-collapse">
+                        @foreach (var menu in Model)
+                        {
+                            if (menu.Slug.ToLower() == "home" || menu.Slug.ToLower() == "trang-chu")
+                            {
+                                <li class="active">
+                                    <a asp-controller="Home" asp-action="Index">@menu.Name</a>
+                                </li>
+                            }
+                            else if (menu.Categories != null && menu.Categories.Any())
+                            {
+                                <li class="dropdown">
+                                    <a asp-controller="Menu" asp-action="Details" asp-route-slug="@menu.Slug">
+                                        @menu.Name <i class="fas fa-angle-down"></i>
+                                    </a>
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach (var cat in menu.Categories)
+                                        {
+                                            <li>
+                                                <a asp-controller="Category" asp-action="Index" asp-route-slug="@cat.Slug">
+                                                    @cat.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a asp-controller="Menu" asp-action="Details" asp-route-slug="@menu.Slug">@menu.Name</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Thanh tìm kiếm -->
+            <div class="col-md-4 col-12 d-flex justify-content-end mt-2 mt-md-0">
+                <form asp-controller="Product" asp-action="Search" method="get" 
+                      style="display: flex; align-items: center; width: 100%; max-width: 300px;">
+                    <input type="text" name="keyword" placeholder="Tìm kiếm..." 
+                           style="flex: 1 1 auto; margin-right: 5px; min-width: 0;" />
+                    <button type="submit" class="btn btn-outline-danger" style="white-space: nowrap;">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

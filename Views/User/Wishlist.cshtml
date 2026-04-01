@@ -1,0 +1,67 @@
+@using MYMVCAPP.Models
+@model IEnumerable<WishlistModel>
+
+@{
+    ViewData["Title"] = "Sản phẩm yêu thích";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Info"] != null)
+{
+    <div class="alert alert-info">@TempData["Info"]</div>
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            @await Component.InvokeAsync("MenuUserSidebar")
+        </div>
+
+        <!-- Nội dung chính -->
+        <div class="col-md-9">
+            <h3 class="mb-4">Danh sách yêu thích</h3>
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <!-- Link tới trang chi tiết sản phẩm -->
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId">
+                                    <img src="~/images/products/@item.Product.Img" 
+                                         class="card-img-top" 
+                                         alt="@item.Product.Name" 
+                                         style="max-width:150px; max-height:150px; object-fit:contain;" />
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">@item.Product.Name</h5>
+                                        <p class="card-text">@item.Product.Price.ToString("N0") VNĐ</p>
+                                    </div>
+                                </a>
+
+                                <div class="card-footer text-center">
+                                    <a asp-controller="Wishlist" asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Bạn chưa thêm sản phẩm nào vào danh sách yêu thích.</p>
+            }
+        </div>
+    </div>
+</div>

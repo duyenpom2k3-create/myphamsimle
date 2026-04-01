@@ -1,0 +1,66 @@
+@model IEnumerable<MYMVCAPP.Models.HeaderModel>
+@{
+    ViewData["Title"] = "Danh sách Header";
+}
+
+<h2 class="mb-3">Danh sách Header</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">+ Thêm mới</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Header</th>
+            <th>Logo</th>
+            <th>Link</th>
+            <th>Ghi chú</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+
+                <!-- Hiển thị Logo nếu có -->
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Logo))
+                    {
+                        <img src="~/images/home/@item.Logo" style="width:60px; height:auto;" />
+                    }
+                    else
+                    {
+                        <span style="color: #888;">(Không có)</span>
+                    }
+                </td>
+
+                <!-- Link -->
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Link))
+                    {
+                        <a href="@item.Link" target="_blank">@item.Link</a>
+                    }
+                    else
+                    {
+                        <span style="color:#999;">(trống)</span>
+                    }
+                </td>
+
+                <!-- Note -->
+                <td>@item.Note</td>
+
+                <!-- Action -->
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Sửa</a>
+
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bạn chắc chắn muốn xóa header này?')">
+                        Xóa
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

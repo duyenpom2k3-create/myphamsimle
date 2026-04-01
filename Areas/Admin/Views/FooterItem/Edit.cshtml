@@ -1,0 +1,26 @@
+@model MYMVCAPP.Models.FooterItem
+@{
+    ViewData["Title"] = "Sửa Footer Item";
+}
+<h2>Sửa Footer Item</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group mb-2">
+        <label>Loại mục</label>
+        <input asp-for="ItemType" class="form-control" />
+    </div>
+    <div class="form-group mb-2">
+        <label>Tiêu đề</label>
+        <input asp-for="ItemTitle" class="form-control" />
+    </div>
+    <div class="form-group mb-2">
+        <label>Thứ tự hiển thị</label>
+        <input asp-for="DisplayOrder" class="form-control" type="number" />
+    </div>
+    <div class="form-group mb-2">
+        <label>Nội dung</label>
+        <textarea asp-for="Content" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

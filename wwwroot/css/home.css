@@ -1,0 +1,192 @@
+
+    /* BỐ CỤC HÀNG & CỘT */
+    
+    /* 1. Đảm bảo sản phẩm hiển thị từ trái sang phải và tạo khoảng cách giữa các hàng */
+    .row.g-4 {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start; /* Căn từ trái sang phải */
+    }
+    .row.g-4 .col-md-4 {
+        margin-bottom: 10px; /* Khoảng cách giữa các hàng */
+    }
+
+    /* 2. Cấu trúc Card và Căn chỉnh nút */
+    .product-card {
+        border: 1px solid #ddd;
+        transition: box-shadow 0.3s;
+        height: 100%; /* Giữ chiều cao thẻ sản phẩm đồng đều */
+        display: flex;
+        flex-direction: column;
+    }
+    .product-card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .product-card img, .product-no-image {
+        width: 100%;
+        height: 200px; 
+        object-fit: contain;
+        padding: 15px; 
+    }
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1; /* Body chiếm hết không gian trống */
+        padding-bottom: 0 !important; 
+    }
+    
+    /* 3. KHẮC PHỤC LỖI NHẢY HÀNG: Giới hạn Tên sản phẩm 2 dòng và giữ chỗ */
+    .product-info-wrapper {
+        min-height: 120px; /* Giữ chỗ cố định cho Tên/Giá/Danh mục/Thương hiệu */
+        padding: 0 10px;
+    }
+    .card-title {
+        font-weight: bold;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Số dòng tối đa */
+        -webkit-box-orient: vertical;
+        line-height: 1.2; 
+        max-height: 2.4em; 
+        margin-bottom: 5px;
+        font-size: 1.1em;
+    }
+
+    /* ĐỊNH DẠNG NÚT CHI TIẾT & YÊU THÍCH (Theo yêu cầu mới) */
+    
+    /* Container chứa 2 nút */
+    .product-buttons {
+        display: flex;
+        gap: 10px; /* Khoảng cách giữa 2 nút */
+        justify-content: center;
+        margin-top: 10px;
+        padding: 0 10px; /* Thêm padding ngang cho đẹp hơn */
+        margin-bottom: 0;
+    }
+
+    /* Nút Chi Tiết */
+    .product-buttons .btn-detail {
+        background-color: #feb352;
+        color: white;
+        border: none;
+        flex: 1; /* Chiếm đều không gian */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        padding: 8px 10px;
+        text-transform: none;
+    }
+    .product-buttons .btn-detail:hover {
+        background-color: #fe980f;
+        color: white;
+    }
+
+    /* Nút Yêu Thích */
+    .product-buttons form {
+        flex: 1; /* Quan trọng: Đảm bảo form chiếm 1/2 không gian */
+        margin: 0;
+    }
+    .product-buttons .btn-wishlist {
+        background-color: white;
+        color: #dc3545;
+        border: 2px solid #dc3545;
+        width: 100%; /* Buộc nút trong form full width */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 5px;
+        transition: all 0.3s;
+        padding: 6px 10px; /* Giảm padding một chút để khớp với Chi Tiết */
+    }
+    .product-buttons .btn-wishlist:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    /* Đảm bảo icon và text luôn thẳng hàng */
+    .product-buttons i {
+        margin-right: 5px;
+    }
+
+    /* Nút Thêm vào giỏ hàng */
+    .card-footer {
+        padding: 0; 
+        border-top: none; 
+        margin-top: 10px; /* Khoảng cách 10px so với 2 nút trên */
+    }
+    .card-footer .add-to-cart-btn {
+        background-color: #feb352; 
+        color: white;
+        border: none;
+        transition: background-color 0.3s;
+        text-transform: none;
+        padding: 10px; 
+        width: 100%; 
+        border-radius: 0 0 4px 4px; 
+    }
+    .card-footer .add-to-cart-btn:hover {
+        background-color: #fe980f;
+        color: white;
+    }
+    
+    /* category*/
+    /* Container chứa 2 nút */
+    .product-buttons {
+        display: flex;
+        gap: 10px; /* khoảng cách giữa 2 nút */
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    /* Nút Chi Tiết */
+    .product-buttons .btn-detail {
+        background-color: #feb352;
+        color: white;
+        border: none;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    .product-buttons .btn-detail:hover {
+        background-color: #fe980f;
+        color: white;
+    }
+
+    /* Nút Yêu Thích */
+    .product-buttons .btn-wishlist {
+        background-color: white;
+        color: #dc3545;
+        border: 2px solid #dc3545;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+    .product-buttons .btn-wishlist:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    /* Đảm bảo icon và text luôn thẳng hàng */
+    .product-buttons i {
+        margin-right: 5px;
+    }
+    .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* căn từ trái sang phải */
+}
+
+

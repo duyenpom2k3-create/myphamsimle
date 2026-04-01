@@ -1,0 +1,80 @@
+@model IEnumerable<MYMVCAPP.Models.ProductModel>
+
+@{
+    var firstCategory = Model.FirstOrDefault()?.Category?.Name ?? "Nổi bật";
+}
+<link rel="stylesheet" href="~/css/home.css" />
+<div class="row">
+    <div class="col-sm-12 padding-right">
+        <div class="features_items"><!--features_items-->
+            <h2 class="title text-center">Sản Phẩm @firstCategory</h2>
+            
+            <div class="row">
+                @foreach(var item in Model)
+                {
+                    <div class="col-6 col-md-3 mb-4">
+                        <div class="product-image-wrapper">
+                            <div class="single-products">
+                                <div class="productinfo text-center">
+                                    
+                                    @* Hình ảnh sản phẩm có thể click *@
+                                    @if (!string.IsNullOrEmpty(item.Img))
+                                    {
+                                        <a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id">
+                                            <img src="@Url.Content("~/images/products/" + item.Img)"
+                                                 style="max-width: 200px; max-height: 200px; object-fit: contain;" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Chưa có ảnh</span>
+                                    }
+
+                                    @* Tên sản phẩm có thể click *@
+                                    <h2>@item.Price.ToString("N0") VND</h2>
+                                    <p style="font-weight:bold; font-size:18px;">
+                                        <a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id" style="color:black; text-decoration:none;">
+                                            @item.Name
+                                        </a>
+                                    </p>
+                                    <p>Danh mục: @item.Category?.Name</p>
+                                    <p>Thương hiệu: @item.Brand?.Name</p>
+
+                                    @* Nút Chi Tiết và Yêu Thích cùng 1 hàng *@
+                                    <div class="product-buttons">
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id"
+                                           class="btn btn-detail">
+                                            <i class="fas fa-eye"></i> Chi Tiết
+                                        </a>
+
+                                        <form asp-controller="Wishlist" asp-action="AddToWishlist" method="post" class="m-0">
+                                            <input type="hidden" name="productId" value="@item.Id" />
+                                            <button type="submit" class="btn btn-wishlist">
+                                                <i class="fas fa-heart"></i> Yêu thích
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @* Nút Thêm vào giỏ hàng *@
+                            <div class="choose mt-2">
+                                <ul class="nav nav-pills nav-justified">
+                                    <li>
+                                        <a class="btn btn-default add-to-cart" 
+                                           asp-action="Add" 
+                                           asp-controller="Cart" 
+                                           asp-route-Id="@item.Id">
+                                            <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

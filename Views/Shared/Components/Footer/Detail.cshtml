@@ -1,0 +1,13 @@
+@model MYMVCAPP.Models.FooterItem
+
+@{
+    ViewData["Title"] = Model.ItemTitle;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4 text-primary">@Model.ItemTitle</h2>
+    <div class="footer-content">
+        @Html.Raw(Model.Content)
+    </div>
+</div>

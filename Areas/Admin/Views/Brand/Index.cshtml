@@ -1,0 +1,52 @@
+@model IEnumerable<MYMVCAPP.Models.BrandModel>
+@{
+    ViewData["Title"] = "Quản lý Thương hiệu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">+ Thêm mới</a>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
+        <tr class="text-center">
+            <th>#</th>
+            <th>Tên thương hiệu</th>
+            <th>Logo</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+        }
+        @foreach (var brand in Model)
+        {
+            <tr class="text-center">
+                <td>@index</td>
+                <td>@brand.Name</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(brand.Image))
+                    {
+                        <img src="~/images/brand/@brand.Image" alt="Logo" style="max-width:80px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Chưa có</span>
+                    }
+                </td>
+                <td>@brand.Description</td>
+                <td>@(brand.Status == 1 ? "Active" : "Inactive")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@brand.Id" class="btn btn-sm btn-primary">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@brand.Id" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bạn có chắc muốn xóa thương hiệu này?');">Xóa</a>
+                </td>
+            </tr>
+            index++;
+        }
+    </tbody>
+</table>

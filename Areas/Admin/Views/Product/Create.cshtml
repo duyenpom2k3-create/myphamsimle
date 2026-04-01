@@ -1,0 +1,81 @@
+@model MYMVCAPP.Models.ProductModel
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mb-4 text-primary">@ViewData["Title"]</h2>
+
+<!-- Hiển thị thông báo -->
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">@TempData["error"]</div>
+}
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Giá</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BrandId" class="form-label">Thương hiệu</label>
+        <select asp-for="BrandId" asp-items="ViewBag.Brands" class="form-select">
+            <option value="">-- Chọn thương hiệu --</option>
+        </select>
+        <span asp-validation-for="BrandId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label">Danh mục</label>
+        <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select">
+            <option value="">-- Chọn danh mục --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Ảnh sản phẩm</label>
+        <input type="file" name="ProductImage" class="form-control" accept="image/*" id="productImageInput" />
+        <small class="text-muted">Ảnh sẽ được lưu vào ~/wwwroot/images/products/</small>
+        <div id="selectedFileName" class="mt-1 text-info"></div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Thêm sản phẩm</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        // Hiển thị tên file khi chọn ảnh
+        const fileInput = document.getElementById('productImageInput');
+        const fileNameDiv = document.getElementById('selectedFileName');
+        fileInput.addEventListener('change', function () {
+            if (fileInput.files.length > 0) {
+                fileNameDiv.textContent = "Đã chọn file: " + fileInput.files[0].name;
+            } else {
+                fileNameDiv.textContent = "";
+            }
+        });
+    </script>
+}

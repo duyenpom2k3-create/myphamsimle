@@ -1,0 +1,260 @@
+@using MYMVCAPP.Models.ViewModels
+@model CartItemViewModel
+
+@{
+ViewData["Title"] = "Thanh toán";
+}
+
+<section id="checkout" class="mt-5 mb-5">
+<div class="container">
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger"><i class="fa fa-times"></i> @TempData["Error"]</div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success"><i class="fa fa-check"></i> @TempData["SuccessMessage"]</div>
+    }
+
+    <div class="breadcrumbs mb-3">
+        <ol class="breadcrumb bg-light p-2 rounded">
+            <li class="breadcrumb-item">
+                <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a asp-controller="Cart" asp-action="Index">Giỏ hàng</a>
+            </li>
+            <li class="breadcrumb-item active">Thanh toán</li>
+        </ol>
+    </div>
+
+    @if (Model != null && Model.CartItems != null && Model.CartItems.Any())
+    {
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-danger text-white fw-bold">
+                        Thông tin người nhận
+                    </div>
+                    <div class="card-body">
+                        <!-- ✅ Form đặt hàng -->
+                        <form asp-action="PlaceOrder" asp-controller="Checkout" method="post" id="checkoutForm">
+                            @Html.AntiForgeryToken()
+                            <div class="mb-3">
+                                <label for="FullName" class="form-label">Họ và tên</label>
+                                <input type="text" id="FullName" name="FullName" class="form-control"
+                                       value="@Model.TempFullName" placeholder="Nhập họ tên" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="email" id="Email" name="Email" class="form-control"
+                                       value="@Model.TempEmail" placeholder="example@gmail.com" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Phone" class="form-label">Số điện thoại</label>
+                                <input type="tel" id="Phone" name="Phone" class="form-control"
+                                       value="@Model.TempPhone" placeholder="098xxxxxxx" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Address" class="form-label">Địa chỉ giao hàng</label>
+                                <textarea id="Address" name="Address" class="form-control" rows="3"
+                                          placeholder="Số nhà, đường, phường/xã..." required>@Model.TempAddress</textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Province" class="form-label">Tỉnh / Thành phố</label>
+                                <select id="Province" name="Province" class="form-select" required>
+                                    <option value="">-- Chọn tỉnh thành --</option>
+                                    <option value="Hà Nội" selected="@(Model.Province == "Hà Nội")">Hà Nội</option>
+                                    <option value="TP.HCM" selected="@(Model.Province == "TP.HCM")">TP.HCM</option>
+                                    <option value="Đà Nẵng" selected="@(Model.Province == "Đà Nẵng")">Đà Nẵng</option>
+                                    <option value="Khác" selected="@(Model.Province == "Khác")">Tỉnh khác</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="PaymentMethod" class="form-label">Phương thức thanh toán</label>
+                                <select id="PaymentMethod" name="PaymentMethod" class="form-select" required>
+                                    <option value="COD" selected="@(Model.TempPaymentMethod == "COD")">Thanh toán khi nhận hàng (COD)</option>
+                                    <option value="Bank" selected="@(Model.TempPaymentMethod == "Bank")">Chuyển khoản ngân hàng</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Thêm input ẩn để truyền GrandTotal lên Server qua AJAX -->
+                            <input type="hidden" id="GrandTotal" value="@Model.GrandTotal" />
+
+                            <button type="submit" class="btn btn-danger w-100 fw-bold mt-3">
+                                <i class="fa fa-check-circle"></i> Đặt hàng ngay
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓM TẮT ĐƠN HÀNG -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-light fw-bold">
+                        Đơn hàng của bạn
+                    </div>
+                    <div class="card-body">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th class="text-end">Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CartItems)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@item.ProductName</strong><br />
+                                            @if (!string.IsNullOrEmpty(item.Option))
+                                            {
+                                                <small class="text-muted">(@item.Option)</small><br />
+                                            }
+                                            <small>Số lượng: @item.Quantity</small>
+                                        </td>
+                                        <td class="text-end">@((item.Price * item.Quantity).ToString("N0")) VNĐ</td>
+                                    </tr>
+                                }
+                                <tr class="fw-bold border-top">
+                                    <td>Tổng tạm tính</td>
+                                    <td class="text-end">@Model.GrandTotal.ToString("N0") VNĐ</td>
+                                </tr>
+                                <tr>
+                                    <td>Phí vận chuyển</td>
+                                    <!-- Thêm ID để JavaScript có thể cập nhật -->
+                                    <td class="text-end" id="shippingFeeDisplay">
+                                        @if (Model.ShippingFee > 0)
+                                        {
+                                            @Model.ShippingFee.ToString("N0") @:VNĐ
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Chưa chọn tỉnh</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Giảm giá</td>
+                                    <td class="text-end text-success">
+                                        -@Model.DiscountAmount.ToString("N0") VNĐ
+                                    </td>
+                                </tr>
+                                <tr class="fw-bold text-danger border-top">
+                                    <td>Tổng thanh toán</td>
+                                    <!-- Thêm ID để JavaScript có thể cập nhật -->
+                                    <td class="text-end" id="finalTotalDisplay">
+                                        @((Model.GrandTotal + Model.ShippingFee - Model.DiscountAmount).ToString("N0")) VNĐ
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-end mt-3">
+                            <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fa fa-arrow-left"></i> Quay lại giỏ hàng
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center py-4">
+            <h5>🛒 Giỏ hàng trống — không thể thanh toán.</h5>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-danger mt-3">Tiếp tục mua sắm</a>
+        </div>
+    }
+</div>
+
+
+</section>
+
+<!-- Script để xử lý tính phí vận chuyển động -->
+
+@section Scripts {
+<script>
+$(document).ready(function () {
+// Hàm định dạng số sang tiền tệ (VD: 10000 -> 10.000 VNĐ)
+function formatCurrency(number) {
+return new Intl.NumberFormat('vi-VN', {
+style: 'currency',
+currency: 'VND',
+minimumFractionDigits: 0
+}).format(number).replace('₫', 'VNĐ').trim();
+}
+
+        // Hàm gửi AJAX để tính phí vận chuyển và tổng cuối
+        function calculateShippingFee() {
+            var selectedProvince = $('#Province').val();
+            var grandTotal = parseFloat($('#GrandTotal').val());
+            var discountAmount = parseFloat('@Model.DiscountAmount'); // Lấy giảm giá từ Model
+            var token = $('input[name="__RequestVerificationToken"]').val(); // Lấy Anti-Forgery Token
+
+            // Nếu chưa chọn tỉnh, hiển thị mặc định và thoát
+            if (!selectedProvince) {
+                $('#shippingFeeDisplay').html('<span class="text-muted">Chưa chọn tỉnh</span>');
+                // Cập nhật tổng thanh toán bằng tổng tạm tính - giảm giá (phí ship = 0)
+                $('#finalTotalDisplay').text(formatCurrency(grandTotal - discountAmount));
+                return;
+            }
+            
+            // Hiển thị trạng thái đang tải
+            $('#shippingFeeDisplay').html('<i class="fa fa-spinner fa-spin"></i> Đang tính...');
+            $('#finalTotalDisplay').html('<i class="fa fa-spinner fa-spin"></i>');
+
+            // *** BƯỚC 1: GỌI AJAX ĐẾN CONTROLLER ***
+            $.ajax({
+                url: '@Url.Action("CalculateShipping", "Checkout")', // Thay thế bằng tên Action và Controller thực tế
+                type: 'POST',
+                data: {
+                    province: selectedProvince,
+                    grandTotal: grandTotal,
+                    discountAmount: discountAmount,
+                    __RequestVerificationToken: token
+                },
+                success: function (response) {
+                    // response phải là JSON Object có dạng: { shippingFee: number, finalTotal: number }
+                    if (response && response.shippingFee !== undefined && response.finalTotal !== undefined) {
+                        var shippingFee = response.shippingFee;
+                        var finalTotal = response.finalTotal;
+
+                        // BƯỚC 2: Cập nhật Phí Vận Chuyển
+                        $('#shippingFeeDisplay').text(formatCurrency(shippingFee));
+
+                        // BƯỚC 3: Cập nhật Tổng Thanh Toán
+                        $('#finalTotalDisplay').text(formatCurrency(finalTotal));
+                    } else {
+                        // Xử lý lỗi nếu server trả về dữ liệu không hợp lệ
+                        $('#shippingFeeDisplay').text('Lỗi');
+                        $('#finalTotalDisplay').text('Lỗi');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi kết nối hoặc lỗi server
+                    console.error("AJAX Error: ", status, error);
+                    $('#shippingFeeDisplay').text('Lỗi kết nối');
+                    $('#finalTotalDisplay').text('Lỗi kết nối');
+                }
+            });
+        }
+
+        // Gắn sự kiện thay đổi cho dropdown Tỉnh / Thành phố
+        $('#Province').on('change', calculateShippingFee);
+
+        // Tính phí lần đầu khi trang load
+        calculateShippingFee();
+    });
+</script>
+
+
+}
